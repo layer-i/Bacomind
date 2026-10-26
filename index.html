@@ -1,0 +1,2303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Bacomind®, the world’s most trusted Bacopa. Think Faster. Stay Clear.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bacomind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Montserrat:wght@600&display=swap">
+<style>
+/* Layout: one cinematic spatial stage per chapter; content floats on matte glass layers over a deep forest ground, leaves drift between the layers. */
+:root {
+  color-scheme: dark;
+  --forest-950: #071a0f;
+  --forest-900: #0b2416;
+  --forest-800: #10331f;
+  --forest-700: #18472c;
+  --brand: #017b3f;
+  --brand-lift: #13924b;
+  --sage: #93ae9d;
+  --sprout: #a9cf7c;
+  --mint: #e3efe6;
+  --paper: #f4f8f1;
+  --monogram: #e72429;
+  --ink-soft: rgba(244, 248, 241, 0.72);
+  --glass: rgba(235, 245, 228, 0.09);
+  --glass-edge: rgba(235, 245, 228, 0.2);
+  --font-display: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-lockup: "Montserrat", "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --step--1: clamp(0.8rem, 0.76rem + 0.2vw, 0.9rem);
+  --step-0: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --step-3: clamp(1.75rem, 1.2rem + 2.6vw, 3.5rem);
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { background: var(--forest-900); color: var(--paper); }
+html { scroll-padding: 96px 0 120px; }
+body {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  overflow-x: clip;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10;
+  background: var(--forest-900);
+}
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Glass chrome */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-edge);
+  -webkit-backdrop-filter: blur(22px) saturate(120%);
+  backdrop-filter: blur(22px) saturate(120%);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+}
+.topbar {
+  position: fixed; top: calc(env(safe-area-inset-top, 0px) + 16px); left: 0; right: 0; z-index: 20;
+  display: flex; justify-content: center;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  pointer-events: none;
+}
+.topbar-inner {
+  pointer-events: auto;
+  display: flex; align-items: center; gap: 18px;
+  padding: 8px 10px 8px 20px; border-radius: 999px;
+  width: min(100%, 720px); justify-content: space-between;
+}
+.topbar-inner.glass { background: rgba(10, 33, 20, 0.62); }
+.topbar-mark { display: flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 700; letter-spacing: -0.01em; color: var(--paper); text-decoration: none; }
+.topbar-mark svg { width: 22px; height: 22px; }
+.pill-btn {
+  font: 600 var(--step--1) / 1 var(--font-display);
+  color: var(--paper); background: rgba(235, 245, 228, 0.14);
+  border: 1px solid var(--glass-edge); border-radius: 999px;
+  min-height: 44px; padding: 0 18px; cursor: pointer; white-space: nowrap;
+}
+.pill-btn:hover { background: rgba(235, 245, 228, 0.22); }
+.pill-btn:focus-visible, .scroll-btn:focus-visible, a:focus-visible { outline: 2px solid var(--sprout); outline-offset: 3px; }
+
+/* Hero stage */
+.hero {
+  position: relative; min-height: min(100svh, 900px); min-height: max(560px, min(100svh, 900px));
+  display: grid; place-items: center; overflow: hidden;
+  background:
+    radial-gradient(120% 70% at 50% 108%, var(--forest-700) 0%, rgba(24, 71, 44, 0) 60%),
+    radial-gradient(90% 60% at 50% 40%, var(--forest-800) 0%, var(--forest-900) 70%, var(--forest-950) 100%);
+  perspective: 1200px;
+  padding-block: 120px 96px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.leaf-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.stage {
+  position: relative; z-index: 2; width: min(100%, 820px);
+  display: flex; flex-direction: column; align-items: center; gap: clamp(20px, 4vw, 40px);
+  transform-style: preserve-3d; will-change: transform;
+}
+.layer-logo { transform: translateZ(40px); width: 100%; }
+.lockup { width: 100%; height: auto; display: block; overflow: visible; }
+.lockup .letter { fill: var(--brand-lift); }
+.lockup .reg { fill: var(--ink-soft); }
+.lockup .tagline { font-family: var(--font-display); font-weight: 500; font-size: 25px; letter-spacing: 0.2px; fill: rgba(244, 248, 241, 0.8); }
+.lockup .mono { fill: var(--monogram); }
+.hero::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 34%; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(11, 36, 22, 0), rgba(11, 36, 22, 0.7) 60%, var(--forest-900));
+}
+
+/* Brand line: one idea per line, meaning carried by motion and material */
+.line { transform: translateZ(90px); width: 100%; display: flex; justify-content: center; margin-top: clamp(28px, 7vh, 72px); }
+.strap {
+  position: relative; margin: 0; display: flex; flex-direction: column; align-items: center; gap: 0.02em;
+  text-align: center; line-height: 1.08; font-size: clamp(2.3rem, 1.3rem + 4.4vw, 4.6rem); letter-spacing: -0.02em;
+}
+.fast-wrap { position: relative; display: inline-block; }
+.fast { display: inline-block; font-weight: 800; color: var(--paper); }
+.speed {
+  position: absolute; right: 100%; top: 18%; width: 1.6em; height: 64%; margin-right: 0.08em;
+  transform-origin: 100% 50%; pointer-events: none;
+  background: repeating-linear-gradient(180deg, rgba(244, 248, 241, 0) 0 0.11em, rgba(244, 248, 241, 0.55) 0.11em 0.135em);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 85%); mask-image: linear-gradient(90deg, transparent, #000 85%);
+}
+.clear {
+  --f: 1;
+  position: relative; display: inline-grid; font-weight: 700; cursor: default; outline: none;
+}
+.clear > span { grid-area: 1 / 1; padding: 0 0.06em 0.28em; margin-bottom: -0.28em; }
+.clear-frost {
+  color: transparent;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='120' height='120' filter='url(%23n)'/></svg>"),
+    linear-gradient(180deg, rgba(244, 249, 241, 0.97), rgba(220, 236, 212, 0.9));
+  -webkit-background-clip: text; background-clip: text;
+  filter: blur(calc(var(--f) * 0.45px));
+  opacity: var(--f);
+}
+.clear-glass {
+  color: rgba(244, 248, 241, 0.14);
+  -webkit-text-stroke: 1.6px rgba(244, 248, 241, 0.96);
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, 0.5) 48%, rgba(255, 255, 255, 0) 60%);
+  background-size: 260% 100%;
+  background-position: calc(100% - (1 - var(--f)) * 100%) 0;
+  -webkit-background-clip: text; background-clip: text;
+  opacity: calc(1 - var(--f));
+}
+
+/* Scroll button */
+.scroll-btn {
+  position: fixed; z-index: 15; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+  transition: opacity 0.4s ease;
+  width: 44px; height: 88px; padding: 0; border: 0; border-radius: 22px; background: none; cursor: pointer; color: var(--paper);
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 7px;
+}
+.scroll-track {
+  position: relative; width: 1px; height: 58px; overflow: hidden;
+  background: linear-gradient(180deg, rgba(244, 248, 241, 0), rgba(244, 248, 241, 0.42));
+}
+.scroll-track::after {
+  content: ""; position: absolute; left: -1px; top: -16px; width: 3px; height: 16px; border-radius: 2px;
+  background: linear-gradient(180deg, rgba(169, 207, 124, 0), var(--sprout));
+  animation: travel 2.2s cubic-bezier(.55, 0, .3, 1) infinite;
+}
+.scroll-btn svg { width: 14px; height: 8px; opacity: 0.75; animation: nudge 2.2s cubic-bezier(.55, 0, .3, 1) infinite; }
+.scroll-btn:hover .scroll-track { background: linear-gradient(180deg, rgba(244, 248, 241, 0), rgba(244, 248, 241, 0.75)); }
+.scroll-btn:hover svg { opacity: 1; }
+.scroll-btn.at-end { opacity: 0 !important; visibility: hidden; pointer-events: none; }
+.scroll-btn::before {
+  content: ""; position: absolute; inset: 6px 9px 0; border-radius: 14px; z-index: -1;
+  background: rgba(8, 28, 17, 0.42); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+@keyframes travel { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(74px); opacity: 0; } }
+@keyframes nudge { 0%, 70% { transform: translateY(0); } 85% { transform: translateY(3px); } 100% { transform: translateY(0); } }
+
+/* Leaf film: a pinned stage scrubbed by scroll */
+.film { position: relative; height: 640vh; background: var(--forest-900); }
+.film-sticky {
+  position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden;
+  background:
+    radial-gradient(90% 70% at 50% 45%, var(--forest-800) 0%, var(--forest-900) 65%, var(--forest-950) 100%);
+}
+.film-sticky::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 30%; z-index: 0; pointer-events: none;
+  background: linear-gradient(180deg, var(--forest-900), rgba(11, 36, 22, 0));
+}
+.film-canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 2;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 var(--fade, 0%));
+  mask-image: linear-gradient(180deg, transparent 0, #000 var(--fade, 0%));
+}
+.film-text {
+  position: absolute; z-index: 4; top: 50%; transform: translateY(-50%);
+  left: max(32px, 6vw, env(safe-area-inset-left, 0px)); width: min(38vw, 480px);
+  display: flex; flex-direction: column; gap: 14px;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.film-text.swap { opacity: 0; transform: translateY(calc(-50% + 12px)); }
+.ft-label { font-size: var(--step--1); font-weight: 600; color: var(--sprout); }
+.ft-big {
+  margin: 0; font-weight: 800; letter-spacing: -0.025em; line-height: 1;
+  font-size: clamp(2.6rem, 1.4rem + 4.4vw, 5.6rem); color: var(--paper); text-wrap: balance;
+}
+.ft-small { margin: 0; font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.3rem); line-height: 1.45; color: var(--ink-soft); max-width: 30ch; text-wrap: pretty; }
+@media (max-width: 899px) {
+  .film-text {
+    top: calc(env(safe-area-inset-top, 0px) + 92px); transform: none;
+    left: max(20px, env(safe-area-inset-left, 0px)); right: max(20px, env(safe-area-inset-right, 0px)); width: auto; gap: 8px;
+  }
+  .film-text.swap { transform: translateY(12px); }
+  .ft-big { font-size: clamp(2.3rem, 1.2rem + 6vw, 3.4rem); }
+  .ft-small { font-size: 1rem; }
+}
+.film-progress {
+  position: absolute; z-index: 4; right: max(20px, env(safe-area-inset-right, 0px)); top: 50%; transform: translateY(-50%);
+  width: 2px; height: 120px; border-radius: 2px; background: rgba(244, 248, 241, 0.14); overflow: hidden;
+}
+.film-progress span { display: block; width: 100%; height: 100%; background: var(--sprout); transform-origin: 50% 0; transform: scaleY(0); }
+.ms-panel {
+  position: absolute; z-index: 1; left: 0; top: 0; width: 400px; height: 270px; border-radius: 26px;
+  transform-origin: 0 0; opacity: 0; pointer-events: none; will-change: transform, opacity;
+}
+.ms-panel h2 { position: absolute; left: 26px; top: 22px; margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+.ms-num { position: absolute; width: 92px; margin-left: -46px; text-align: center; font-size: 18px; font-weight: 700; line-height: 1.1; }
+.ms-sub { position: absolute; width: 134px; margin-left: -67px; text-align: center; font-size: 15px; color: var(--ink-soft); }
+
+/* After the film */
+.next {
+  background: var(--forest-950);
+  padding-block: 64px 96px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; justify-content: center;
+}
+.next p { margin: 0; font-size: var(--step--1); color: var(--sage); }
+
+/* Evidence: one idea per screen, the detail one tap away */
+.evidence {
+  position: relative;
+  background: linear-gradient(180deg, var(--forest-950) 0%, var(--forest-900) 10%, var(--forest-900) 90%, var(--forest-950) 100%);
+}
+.ev-backdrop { position: sticky; top: 0; height: 100vh; height: 100svh; margin-bottom: -100vh; margin-bottom: -100svh; pointer-events: none; z-index: 0; }
+.ev-backdrop canvas { width: 100%; height: 100%; display: block; }
+.chap {
+  position: relative; z-index: 1;
+  padding-block: clamp(80px, 13vh, 150px);
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: clamp(28px, 5vw, 56px);
+}
+.chap-inner {
+  width: 100%; max-width: 1180px; margin: 0 auto;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(32px, 5vw, 84px); align-items: center;
+}
+.chap-inner.single { grid-template-columns: minmax(0, 1fr); }
+.chap.flip .chap-text { order: 2; }
+.chap-text { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.chap-tag { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: var(--step--1); color: var(--ink-soft); }
+.chap-tag .aud { padding: 5px 12px; border-radius: 999px; background: rgba(169, 207, 124, 0.14); color: var(--sprout); font-weight: 600; }
+.chap-title { margin: 0; font-size: clamp(1.7rem, 1.2rem + 1.9vw, 2.7rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.12; text-wrap: balance; color: rgba(244, 248, 241, 0.92); }
+.strip { display: flex; flex-wrap: wrap; gap: 6px 26px; font-size: var(--step-0); color: var(--ink-soft); }
+.strip b { color: var(--paper); font-weight: 700; font-variant-numeric: tabular-nums; margin-right: 4px; }
+.quiet { margin: 0; font-size: var(--step--1); color: var(--ink-soft); }
+.study .claims { margin: 6px 0 12px; }
+.study .claim { font-size: 0.82rem; padding: 5px 11px; }
+.study .det-sub { color: var(--paper); }
+.big { display: flex; flex-direction: column; gap: 6px; }
+.big-num { font-size: clamp(3.6rem, 2.2rem + 6vw, 7.4rem); font-weight: 800; letter-spacing: -0.035em; line-height: 0.95; font-variant-numeric: tabular-nums; color: var(--paper); }
+.big-num .arrow { color: var(--sprout); font-weight: 700; margin-right: 0.03em; }
+.big-num small { font-size: 0.38em; font-weight: 700; letter-spacing: 0; margin-left: 0.12em; color: var(--ink-soft); }
+.big-line { font-size: clamp(1.6rem, 1.1rem + 2vw, 2.6rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; text-wrap: balance; }
+.big-label { font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem); font-weight: 700; }
+.big-sub { color: var(--ink-soft); font-size: var(--step-0); }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { border-radius: 18px; padding: 12px 16px; display: flex; flex-direction: column; gap: 2px; min-width: 150px; flex: 1 1 150px; }
+.chip b { font-size: 1.55rem; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.15; }
+.chip strong { font-size: 0.95rem; }
+.chip span { font-size: var(--step--1); color: var(--ink-soft); }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { font-size: 0.85rem; padding: 5px 12px; border-radius: 999px; background: rgba(244, 248, 241, 0.08); color: var(--paper); }
+.claims { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.claims-label { font-size: var(--step--1); color: var(--sage); margin-right: 4px; }
+.claim { font-size: 0.9rem; font-weight: 600; padding: 7px 14px; border-radius: 999px; border: 1px solid rgba(169, 207, 124, 0.45); color: var(--mint); background: rgba(169, 207, 124, 0.07); }
+.study { border-top: 1px solid rgba(244, 248, 241, 0.12); padding-top: 4px; }
+.study summary {
+  cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 10px;
+  font-size: var(--step--1); font-weight: 600; color: var(--ink-soft); min-height: 44px;
+}
+.study summary::-webkit-details-marker { display: none; }
+.study summary::before { content: ""; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform 0.3s ease; }
+.study[open] summary::before { transform: rotate(45deg); }
+.study summary:hover { color: var(--paper); }
+.study summary:focus-visible { outline: 2px solid var(--sprout); outline-offset: 3px; border-radius: 6px; }
+.study p { margin: 4px 0 8px; font-size: 0.86rem; line-height: 1.65; color: var(--ink-soft); max-width: 76ch; }
+.chap-visual { min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.viz { border-radius: 28px; padding: clamp(18px, 2.4vw, 28px); min-width: 0; }
+.viz-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; align-items: baseline; margin-bottom: 10px; }
+.viz-title { font-weight: 700; font-size: 1.05rem; }
+.viz-note { font-size: var(--step--1); color: var(--ink-soft); }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: var(--step--1); color: var(--ink-soft); }
+.legend i { display: inline-block; width: 20px; height: 0; border-top: 3px solid var(--sprout); vertical-align: middle; margin-right: 6px; }
+.legend i.pl { border-top: 2px dashed var(--sage); }
+.legend i.bar { border-top-width: 9px; border-radius: 2px; }
+.legend i.bar.pl { border-top: 9px solid rgba(147, 174, 157, 0.55); }
+.chart { width: 100%; min-height: 200px; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; touch-action: pan-y; }
+.viz-foot { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.viz-pill { font-size: 0.85rem; font-weight: 600; padding: 5px 12px; border-radius: 999px; background: rgba(169, 207, 124, 0.14); color: var(--sprout); }
+.photo { border-radius: 26px; overflow: hidden; position: relative; max-width: 100%; background: var(--forest-800); }
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; max-width: 100%; transform: scale(1.1); will-change: transform; }
+.seg { display: inline-flex; padding: 4px; border-radius: 999px; background: rgba(244, 248, 241, 0.07); gap: 4px; }
+.seg button {
+  font: 600 var(--step--1) / 1 var(--font-display); color: var(--ink-soft); background: none; border: 0;
+  min-height: 44px; padding: 0 16px; border-radius: 999px; cursor: pointer;
+}
+.seg button[aria-pressed="true"] { background: rgba(244, 248, 241, 0.16); color: var(--paper); }
+.seg button:focus-visible { outline: 2px solid var(--sprout); outline-offset: 2px; }
+
+/* chart marks */
+.ax { stroke: rgba(244, 248, 241, 0.1); stroke-width: 1; }
+.ax-zero { stroke: rgba(244, 248, 241, 0.55); stroke-width: 1.5; }
+.tick { fill: rgba(244, 248, 241, 0.6); font-size: 12px; font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+.row-name { fill: var(--paper); font-size: 15px; font-weight: 700; font-family: var(--font-display); }
+.row-val { fill: var(--paper); font-size: 14px; font-weight: 700; font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+.row-val.soft { fill: rgba(244, 248, 241, 0.75); font-weight: 600; }
+.row-bg { fill: rgba(244, 248, 241, 0.035); }
+.l-b { fill: none; stroke: var(--sprout); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.l-p { fill: none; stroke: var(--sage); stroke-width: 2; stroke-dasharray: 6 6; }
+.dot-b { fill: var(--sprout); }
+.dot-p { fill: var(--forest-900); stroke: var(--sage); stroke-width: 2; }
+.gap-fill { fill: rgba(169, 207, 124, 0.13); }
+.lab-b { fill: var(--sprout); font-weight: 700; font-size: 14px; font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+.lab-p { fill: rgba(244, 248, 241, 0.8); font-weight: 600; font-size: 13px; font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+.bar-b { fill: var(--sprout); }
+.bar-p { fill: rgba(147, 174, 157, 0.55); }
+.whisk { stroke: var(--sage); stroke-width: 3.5; stroke-linecap: round; }
+.whisk.strong { stroke: var(--sprout); stroke-width: 4; }
+.w-dot { fill: var(--sage); }
+.w-dot.strong { fill: var(--sprout); }
+.guide { stroke: rgba(244, 248, 241, 0.35); stroke-width: 1; }
+.tip rect { fill: rgba(9, 30, 18, 0.94); stroke: rgba(235, 245, 228, 0.25); }
+.tip text { fill: var(--paper); font-size: 12.5px; font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+.tip text.t1 { font-weight: 700; }
+.pill-bg { fill: rgba(169, 207, 124, 0.16); }
+.lab-bg { fill: rgba(12, 38, 23, 0.9); }
+.pill-bg.pl { fill: rgba(244, 248, 241, 0.1); }
+
+/* draw-on-arrival states (only applied to charts still below the fold) */
+.draw { stroke-dasharray: 1 1; stroke-dashoffset: 0; transition: stroke-dashoffset 1.7s cubic-bezier(.3, .7, .2, 1) 0.15s; }
+.anim.pre .draw { stroke-dashoffset: 1; transition: none; }
+.fade { transition: opacity 0.7s ease 0.2s; }
+.fade2 { transition: opacity 0.6s ease 1.3s; }
+.anim.pre .fade, .anim.pre .fade2 { opacity: 0; transition: none; }
+.grow, .grow-l { transform-box: fill-box; transition: transform 1.3s cubic-bezier(.3, .7, .2, 1) 0.2s; }
+.grow { transform-origin: 0% 50%; }
+.grow-l { transform-origin: 100% 50%; }
+.anim.pre .grow, .anim.pre .grow-l { transform: scaleX(0); transition: none; }
+
+/* relay of neurons */
+.relay { position: relative; width: 100%; max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 3vw, 40px); }
+.relay::before {
+  content: ""; position: absolute; left: 16.6%; right: 16.6%; top: 72px; height: 1px;
+  background: linear-gradient(90deg, rgba(169, 207, 124, 0.2), rgba(169, 207, 124, 0.7), rgba(169, 207, 124, 0.2));
+}
+.relay-pulse {
+  position: absolute; top: 69px; left: 16.6%; width: 7px; height: 7px; margin-left: -3px; border-radius: 50%;
+  background: var(--sprout); opacity: 0;
+}
+.relay.in .relay-pulse { animation: relay 2.6s cubic-bezier(.45, 0, .3, 1) infinite; }
+@keyframes relay { 0% { left: 16.6%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { left: 83.4%; opacity: 0; } }
+.node { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+.node-orb { width: 144px; height: 144px; border-radius: 50%; display: grid; place-items: center; position: relative; z-index: 1; padding: 0 12px; text-align: center; }
+.relay .node-orb.glass { background: rgba(14, 44, 27, 0.95); }
+.node-icon { width: 52px; height: 52px; color: var(--paper); }
+.node-icon .nd { fill: var(--sprout); }
+.relay .node p { font-size: 1.05rem; color: rgba(244, 248, 241, 0.86); }
+.node-orb b { font-size: 1.9rem; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.05; }
+.node strong { font-size: 1.05rem; }
+.node p { margin: 0; color: var(--ink-soft); max-width: 24ch; font-size: 0.95rem; line-height: 1.5; }
+.relay .node { transition: opacity 0.6s ease, transform 0.6s ease; }
+.relay.pre .node { opacity: 0; transform: translateY(14px); }
+.relay .node:nth-child(3) { transition-delay: 0.25s; }
+.relay .node:nth-child(4) { transition-delay: 0.5s; }
+
+/* rings */
+.rings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.ring-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+.ring-item svg { width: min(170px, 100%); height: auto; }
+.ring-bg { fill: none; stroke: rgba(244, 248, 241, 0.09); stroke-width: 13; }
+.ring-fg { fill: none; stroke: var(--sprout); stroke-width: 13; stroke-linecap: round; transition: stroke-dashoffset 1.8s cubic-bezier(.3, .7, .2, 1) 0.2s; }
+.anim.pre .ring-fg { stroke-dashoffset: 100 !important; transition: none; }
+.ring-num { fill: var(--paper); font-size: 36px; font-weight: 800; font-family: var(--font-display); letter-spacing: -0.02em; }
+.ring-item strong { font-size: 1.05rem; line-height: 1.3; }
+.ring-item span { color: var(--ink-soft); font-size: var(--step--1); }
+
+/* effect card + cognitive-age sum */
+.effect { border-radius: 24px; padding: 20px 22px; background: var(--brand); color: #f4f8f1; display: flex; flex-direction: column; gap: 4px; }
+.effect .k { font-size: var(--step--1); }
+.effect b { font-size: clamp(2.6rem, 2rem + 2vw, 3.4rem); letter-spacing: -0.03em; line-height: 1; }
+.effect span { font-weight: 600; }
+.sum { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 48px); align-items: stretch; width: 100%; max-width: 1180px; margin: 0 auto; }
+.sum-rows { display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+.sum-rows h3 { margin: 0 0 6px; font-size: clamp(1.3rem, 1.1rem + 1vw, 1.8rem); letter-spacing: -0.02em; }
+.eq-row { display: grid; grid-template-columns: minmax(130px, auto) minmax(0, 1fr); gap: 16px; align-items: center; border-radius: 18px; padding: 14px 18px; }
+.eq-row b { font-size: clamp(1.6rem, 1.3rem + 1.4vw, 2.3rem); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.eq-row span { color: var(--ink-soft); }
+.eq-row.final { background: var(--brand); border-color: transparent; }
+.eq-row.final span { color: #e9f3e6; }
+.eq-op { text-align: center; color: var(--sprout); font-size: 1.4rem; line-height: 1; }
+.sum .photo { min-height: 300px; }
+.sum .photo img { position: absolute; inset: 0; height: 100%; }
+.sum-rows > * { transition: opacity 0.6s ease, transform 0.6s ease; }
+.sum.pre .sum-rows > * { opacity: 0; transform: translateY(14px); }
+.sum-rows > :nth-child(3) { transition-delay: 0.3s; } .sum-rows > :nth-child(4) { transition-delay: 0.6s; }
+.sum-rows > :nth-child(5) { transition-delay: 0.9s; } .sum-rows > :nth-child(6) { transition-delay: 1.2s; }
+
+/* Inside the brain: pinned journey */
+.inside { position: relative; height: 560vh; background: var(--forest-900); }
+
+/* How it works */
+.lead { margin: 0; font-size: clamp(1.2rem, 1rem + 0.9vw, 1.6rem); line-height: 1.45; max-width: 44ch; color: rgba(244, 248, 241, 0.88); text-wrap: pretty; }
+.mech { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; width: 100%; max-width: 1180px; margin: 0 auto; }
+.mech-card { border-radius: 24px; padding: 22px 22px 24px; display: flex; flex-direction: column; gap: 10px; }
+.mech-card h3 { margin: 0; font-size: 1.2rem; letter-spacing: -0.01em; }
+.mech-card p, .mech-card li { margin: 0; color: var(--ink-soft); line-height: 1.5; }
+.mech-card ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+.mech-card .mk { width: 40px; height: 40px; color: var(--sprout); }
+.mech-card .sub { color: var(--paper); font-weight: 600; margin-top: 4px; }
+.outcomes { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; width: 100%; max-width: 1180px; margin: 0 auto; }
+.outcome {
+  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.3rem); font-weight: 700; padding: 12px 22px; border-radius: 999px;
+  background: var(--sprout); color: var(--forest-900); transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.anim.pre .outcome { opacity: 0; transform: translateY(10px); }
+.outcome:nth-child(2) { transition-delay: 0.12s; } .outcome:nth-child(3) { transition-delay: 0.24s; }
+.outcome:nth-child(4) { transition-delay: 0.36s; } .outcome:nth-child(5) { transition-delay: 0.48s; }
+.mech-card { transition: opacity 0.6s ease, transform 0.6s ease; }
+.mech.pre .mech-card { opacity: 0; transform: translateY(14px); }
+.mech-card:nth-child(2) { transition-delay: 0.15s; } .mech-card:nth-child(3) { transition-delay: 0.3s; }
+
+/* Safety */
+.dose { display: flex; flex-direction: column; gap: 10px; }
+.dose-days { display: flex; justify-content: space-between; font-size: var(--step--1); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.dose-bar { position: relative; display: flex; height: 54px; border-radius: 14px; overflow: hidden; background: rgba(244, 248, 241, 0.05); }
+.dose-bar > span { flex: 1; display: grid; place-items: center; font-weight: 700; transform-origin: 0 50%; transition: transform 1s cubic-bezier(.3, .7, .2, 1); }
+.dose-bar .d1 { background: rgba(169, 207, 124, 0.32); color: var(--paper); }
+.dose-bar .d2 { background: var(--brand); color: #f4f8f1; transition-delay: 0.9s; }
+.anim.pre .dose-bar > span { transform: scaleX(0); transition: none; }
+.dose-marker { position: absolute; top: 0; bottom: 0; width: 3px; border-radius: 2px; background: var(--paper); left: calc(100% - 3px); transition: left 2s cubic-bezier(.45, 0, .3, 1) 0.2s; }
+.anim.pre .dose-marker { left: 0; transition: none; }
+.dose-assess { display: flex; justify-content: space-between; gap: 12px; font-size: var(--step--1); font-weight: 600; }
+.ok-card { border-radius: 22px; padding: 18px 20px; background: var(--brand); color: #f4f8f1; display: flex; flex-direction: column; gap: 4px; }
+.ok-card b { font-size: 1.25rem; }
+.ok-card .k { font-size: var(--step--1); }
+.ok-card span { color: #e2efdf; }
+.params { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px 6px; }
+.params .param { font-size: 0.84rem; }
+@media (max-width: 560px) {
+  .params { display: flex; flex-wrap: wrap; justify-content: center; }
+  .params .param { flex: 0 0 30%; }
+}
+.param { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; font-weight: 600; font-size: 0.92rem; transition: opacity 0.5s ease, transform 0.5s ease; }
+.param i { width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center; background: rgba(169, 207, 124, 0.14); color: var(--sprout); }
+.param svg { width: 26px; height: 26px; }
+.anim.pre .param { opacity: 0; transform: translateY(10px); }
+.param:nth-child(2) { transition-delay: 0.1s; } .param:nth-child(3) { transition-delay: 0.2s; }
+.param:nth-child(4) { transition-delay: 0.3s; } .param:nth-child(5) { transition-delay: 0.4s; }
+
+/* Formulate */
+.reasons-wrap { width: 100%; max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: clamp(20px, 4vw, 56px); align-items: center; }
+.reasons { display: flex; flex-direction: column; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.reasons.left { align-items: flex-end; }
+.reasons.right { align-items: flex-start; }
+.reason { padding: 11px 18px; border-radius: 999px; font-weight: 600; background: rgba(244, 248, 241, 0.06); border: 1px solid rgba(244, 248, 241, 0.13); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reasons-wrap.pre .reasons.left .reason { opacity: 0; transform: translateX(14px); }
+.reasons-wrap.pre .reasons.right .reason { opacity: 0; transform: translateX(-14px); }
+.reason:nth-child(2) { transition-delay: 0.12s; } .reason:nth-child(3) { transition-delay: 0.24s; } .reason:nth-child(4) { transition-delay: 0.36s; }
+.eight { position: relative; width: clamp(230px, 26vw, 330px); aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; }
+.eight canvas { position: absolute; inset: -8%; width: 116%; height: 116%; }
+.eight-inner { position: relative; width: 66%; aspect-ratio: 1; border-radius: 50%; background: rgba(9, 30, 18, 0.9); border: 1px solid rgba(169, 207, 124, 0.25); display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0 8%; }
+.eight-inner b { font-size: clamp(4.4rem, 3rem + 4vw, 6.6rem); font-weight: 800; line-height: 1; color: var(--sprout); letter-spacing: -0.04em; }
+.eight-inner span { font-size: clamp(0.85rem, 0.75rem + 0.4vw, 1rem); font-weight: 600; line-height: 1.3; }
+.formats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; width: 100%; max-width: 1180px; margin: 0 auto; padding: 0; list-style: none; }
+.format { position: relative; border-radius: 22px; overflow: hidden; aspect-ratio: 3 / 4; background: var(--forest-800); }
+.format img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.8s ease; }
+.format:hover img { transform: scale(1.06); }
+.format::after { content: ""; position: absolute; inset: 45% 0 0; background: linear-gradient(180deg, rgba(5, 18, 10, 0), rgba(5, 18, 10, 0.8)); }
+.format span { position: absolute; z-index: 1; left: 14px; right: 14px; bottom: 12px; font-weight: 700; font-size: 1.05rem; line-height: 1.2; }
+.certs { background: #ffffff; border-radius: 22px; padding: 12px 20px; width: min(100%, 640px); margin: 0 auto; }
+.certs img { width: 100%; height: auto; display: block; }
+.legal { width: 100%; max-width: 820px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; gap: 10px; }
+.legal p { margin: 0; font-size: 0.85rem; line-height: 1.6; color: var(--ink-soft); }
+.legal a, .site-foot a { color: var(--sprout); display: inline-block; padding-block: 12px; margin-block: -12px; }
+.relay .node strong { font-size: 1.05rem; }
+.legal .fda { font-size: 0.78rem; letter-spacing: 0.01em; color: rgba(244, 248, 241, 0.62); }
+
+/* Close: reaction test */
+.close {
+  position: relative; z-index: 1; overflow: hidden;
+  background: radial-gradient(80% 60% at 50% 40%, var(--forest-800), var(--forest-900) 70%, var(--forest-950));
+  padding-block: clamp(90px, 14vh, 160px) clamp(70px, 10vh, 120px);
+  padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; align-items: center; gap: 30px; text-align: center;
+}
+.close-title { margin: 0; font-size: clamp(2.1rem, 1.4rem + 2.8vw, 3.6rem); font-weight: 800; letter-spacing: -0.025em; line-height: 1.08; text-wrap: balance; }
+.test-wrap { display: flex; flex-wrap: wrap; gap: clamp(24px, 6vw, 72px); align-items: center; justify-content: center; }
+.test { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.test-btn {
+  width: clamp(230px, 32vw, 300px); aspect-ratio: 1; border-radius: 50%; cursor: pointer;
+  border: 1px solid var(--glass-edge); background: rgba(235, 245, 228, 0.08); color: var(--paper);
+  -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 24px;
+  font: 700 1.15rem / 1.3 var(--font-display); transition: background 0.12s ease, transform 0.12s ease, color 0.12s ease;
+  touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none;
+}
+.test-btn:active { transform: scale(0.985); }
+.test-btn:focus-visible { outline: 2px solid var(--sprout); outline-offset: 6px; }
+.test-btn[data-state="wait"] { background: rgba(6, 22, 13, 0.92); }
+.test-btn[data-state="go"] { background: var(--sprout); color: var(--forest-900); border-color: transparent; }
+.test-btn[data-state="early"] { background: rgba(120, 50, 40, 0.35); }
+.test-btn .ms { font-size: clamp(2.8rem, 2.2rem + 2vw, 3.8rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.test-btn .hint { font-size: 0.95rem; font-weight: 600; opacity: 0.85; }
+.test-stats { display: flex; gap: 22px; font-size: var(--step--1); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.test-stats b { color: var(--paper); }
+.qr { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.qr-card { background: #ffffff; border-radius: 20px; padding: 12px; width: 168px; }
+.qr-card img { width: 100%; height: auto; display: block; }
+.qr span { font-size: var(--step--1); color: var(--ink-soft); max-width: 22ch; }
+.close-strap { margin-top: 12px; font-size: clamp(2rem, 1.3rem + 3vw, 3.6rem); }
+@property --f { syntax: '<number>'; inherits: true; initial-value: 1; }
+.close-clear { transition: --f 1.6s ease 0.3s; }
+.close-clear:hover, .close-clear.clear-on { --f: 0; }
+.site-foot { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: var(--step--1); color: var(--ink-soft); margin-top: 20px; }
+.site-foot a { color: var(--sprout); }
+
+@media (max-width: 860px) {
+  .chap-inner, .sum { grid-template-columns: minmax(0, 1fr); }
+  .chap.flip .chap-text { order: 0; }
+  .mech { grid-template-columns: minmax(0, 1fr); }
+  .reasons-wrap { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+  .eight { order: -1; }
+  .reasons, .reasons.left, .reasons.right { align-items: center; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .reasons-wrap.pre .reasons .reason { transform: translateY(10px); }
+  .formats { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 58%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; }
+  .format { scroll-snap-align: start; }
+}
+@media (max-width: 640px) {
+  .relay { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .relay::before, .relay-pulse { display: none; }
+  .node-orb { width: 120px; height: 120px; }
+  .eq-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+
+@media (max-width: 560px) {
+  .topbar-inner { padding-left: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-track::after, .scroll-btn svg, .relay.in .relay-pulse { animation: none; }
+  .scroll-track::after { transform: translateY(46px); opacity: 1; }
+  .close-clear, .film-text, .film-text.swap, .relay .node, .mech-card, .outcome, .param, .reason, .sum-rows > *, .format img { transition: none; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner glass">
+    <a class="topbar-mark" href="#top" aria-label="Bacomind, back to top">
+      <svg viewBox="381 86 29 28" aria-hidden="true"><path id="topbar-brain" fill="#e72429" d="M404.06,99.63c-.03-.12-.08-.24-.13-.36-.05-.11-.09-.23-.11-.31-.02-.13-.01-.27,0-.43,0-.15.01-.31,0-.46-.07-.66-.47-1.55-1.18-1.94-.06-.04-.14-.06-.21-.08-.05-.02-.13-.04-.15-.05-.02-.02-.05-.12-.06-.17-.02-.08-.05-.16-.08-.23-.59-1.08-1.59-1.79-2.89-2.04-.34-.07-.35-.07-.38-.11-.04-.04-.11-.11-.27-.22-.22-.14-.49-.21-.79-.21-.16,0-.32.02-.5.05-.07.01-.14.05-.19.08-.03.02-.08.04-.1.05-.06-.01-.26-.12-.37-.18-.13-.07-.26-.13-.34-.16-.21-.08-.63-.21-1.05-.21-.04,0-.08,0-.12,0-.13,0-.26.05-.39.08-.13.03-.25.07-.34.07h-.01c-.13,0-.25-.04-.38-.07-.17-.04-.36-.09-.61-.09-.05,0-.1,0-.14,0-.34.03-.58.16-.77.27-.1.06-.19.11-.26.13h0s-.07-.02-.11-.04c-.05-.02-.12-.05-.19-.05-.05,0-.11,0-.17,0-1.26,0-3.65,1.32-4.06,2.45-.05.13-.06.21-.07.25q-.01.05-.17.24c-.92,1.09-1.08,2.55-.39,3.63.04.06.1.11.15.16.02.02.05.05.06.06.02.05.03.15.05.25.02.12.04.26.07.37.37,1.09,1.58,1.49,2.58,1.62.45,1.33,1.74,2,3.85,2,.32,0,.65-.02,1.02-.05.06.22.2.41.32.58.08.11.15.2.19.29.06.12.1.3.14.5.04.19.09.39.15.56.17.46.81,1.66,1.63,1.74.03,0,.06,0,.09,0,.55,0,.71-.47.84-.86.08-.22.15-.44.28-.55.14-.12.51-.17.81-.21.19-.03.38-.05.53-.09,1.14-.32,1.54-.91,1.66-1.39.48-.05,1.24-.21,1.63-.77.1-.15.21-.32.32-.49.07-.12.15-.24.22-.35.59-.89.68-2.33.46-3.29"/></svg>
+      Bacomind
+    </a>
+    <button class="pill-btn" id="replay" type="button">Replay intro</button>
+  </div>
+</header>
+
+<button class="scroll-btn" id="scroll-btn" type="button" aria-label="Scroll down one screen">
+  <span class="scroll-track" aria-hidden="true"></span>
+  <svg viewBox="0 0 14 8" aria-hidden="true"><path d="M1 1 L7 7 L13 1" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<main id="top">
+  <section class="hero" id="hero" aria-labelledby="hero-title">
+    <canvas class="leaf-canvas" id="leaves" aria-hidden="true"></canvas>
+    <div class="stage" id="stage">
+      <div class="layer-logo">
+        <svg class="lockup" id="lockup" viewBox="30 64 532 162" role="img" aria-label="Bacomind, World&#8217;s most trusted Bacopa">
+          <defs>
+            <clipPath id="letter-clip"><rect x="30" y="70" width="532" height="107"/></clipPath>
+          </defs>
+          <g clip-path="url(#letter-clip)">
+            <g class="letters">
+              <path class="letter" d="M44.33,176.13v-88.79h42.6c5.380,0,9.720.68,13.020,2.030,3.3,1.360,5.750,3.630,7.340,6.830,1.590,3.190,2.390,7.580,2.390,13.170s-.74,10.110-2.210,13.150c-1.470,3.040-4.6,5.360-9.390,6.970,5.630,1.6,9.410,3.980,11.330,7.130,1.920,3.150,2.880,7.770,2.880,13.880,0,5.590-.7,10.250-2.110,14-1.4,3.750-3.790,6.630-7.150,8.630-3.360,2-7.910,3.010-13.640,3.010h-45.070ZM85.63,96.18h-31.43v29.85h27.97c4.5,0,7.990-.45,10.450-1.340,2.460-.9,4.210-2.490,5.230-4.770,1.030-2.290,1.540-5.560,1.540-9.830,0-5.4-.95-9.070-2.850-11-1.9-1.930-5.530-2.900-10.910-2.900M89.14,135.01h-34.94v32.420h27.230c5.700,0,9.910-.32,12.620-.95,2.710-.64,4.690-2.110,5.940-4.420,1.250-2.310,1.870-6.020,1.870-11.140s-.82-9.250-2.470-11.920c-1.650-2.660-5.070-4-10.250-4"/>
+              <path class="letter" d="M128.95,131.96h-9.580c0-7.760,1.970-12.710,5.910-14.870,3.940-2.160,10.140-3.240,18.600-3.240,6.360,0,11.440.51,15.220,1.520,3.780,1.010,6.680,3.100,8.680,6.240,2,3.150,3.010,7.850,3.010,14.090v40.420h-8.800l.57-6.510c-2.360,3.060-5.200,5.090-8.540,6.070-3.340.98-7.490,1.470-12.470,1.470-5.560,0-10.080-.5-13.540-1.490-3.470-.99-6.130-2.910-7.990-5.760-1.860-2.850-2.790-7-2.790-12.450s.99-9.150,2.970-11.900c1.980-2.750,4.690-4.570,8.120-5.460,3.430-.9,7.800-1.340,13.100-1.340,4.880,0,8.920.35,12.110,1.060,3.190.71,5.770,2.430,7.730,5.160v-7.210c0-5.210-.45-9-1.340-11.370-.9-2.370-2.550-3.940-4.950-4.720-2.400-.78-6.290-1.170-11.670-1.170-5.850,0-9.810.83-11.880,2.480-1.840,1.270-2.760,3.540-2.760,6.790,0,.26.05.61.16,1.050.11.44.16.82.16,1.150M126.90,156.43c0,5.210,1.040,8.710,3.130,10.500,2.090,1.790,5.780,2.690,11.090,2.690,4.080,0,7.510-.2,10.310-.6,2.790-.4,5.220-1.450,7.280-3.150,2.060-1.700,3.090-4.360,3.090-7.990,0-5.070-1.430-8.320-4.280-9.740-2.850-1.430-7.170-2.140-12.940-2.140h-2.330c-6.740,0-11.130.92-13.150,2.760-1.460,1.160-2.190,3.710-2.190,7.670"/>
+              <path class="letter" d="M220.46,153.39h9.260c0,6.360-.87,11.200-2.600,14.520-1.730,3.310-4.450,5.580-8.150,6.810-3.700,1.220-8.850,1.840-15.450,1.840s-11.540-.64-15.240-1.930c-3.700-1.280-6.420-3.260-8.150-5.940-1.730-2.680-2.830-5.910-3.290-9.710-.46-3.790-.69-9.130-.69-16.020,0-7.310.77-13.080,2.300-17.310,1.530-4.230,4.280-7.360,8.260-9.370,3.970-2.010,9.580-3.020,16.810-3.020,7.970,0,14.120,1.280,18.440,3.840,4.330,2.560,6.490,7.610,6.490,15.150v2.020h-8.980c0-3.750-.49-6.580-1.470-8.490-.98-1.910-2.520-3.220-4.630-3.920-2.110-.71-5.050-1.060-8.820-1.060-5.630,0-9.740.54-12.310,1.630-2.570,1.080-4.280,3.060-5.130,5.920-.85,2.870-1.270,7.400-1.270,13.600v6.220c0,5.490.31,9.630.94,12.410.62,2.780,2.150,4.910,4.580,6.380,2.430,1.470,6.250,2.210,11.460,2.210s8.640-.32,11-.97c2.360-.65,4.050-2.090,5.090-4.310,1.040-2.230,1.560-5.720,1.560-10.480"/>
+              <path class="letter" d="M234.82,143.24c0-7.520.66-13.420,1.960-17.720,1.310-4.290,3.850-7.480,7.620-9.570,3.770-2.090,9.360-3.130,16.760-3.130,7.970,0,13.970.87,18.020,2.600,4.040,1.730,6.810,4.700,8.290,8.890,1.490,4.200,2.230,10.310,2.230,18.350,0,8.440-.43,14.920-1.290,19.450-.86,4.530-3.150,8.160-6.860,10.910-3.710,2.750-9.590,4.120-17.630,4.120s-13.610-.74-17.700-2.210c-4.090-1.470-7.010-4.200-8.770-8.190-1.760-3.980-2.630-9.840-2.630-17.570v-5.940ZM244.23,143.24v5.230c0,9.550,1.250,15.680,3.750,18.390,1.770,1.750,5.100,2.620,10,2.620h4.490c3.960,0,7.100-.32,9.430-.96,2.330-.64,4.150-1.910,5.460-3.820,1.310-1.910,2.080-4.760,2.310-8.560.12-3.300.18-8.040.18-14.220s-.25-10.410-.76-13.190c-.51-2.780-1.840-4.850-3.990-6.210-2.160-1.360-5.690-2.030-10.620-2.030h-2.010c-5.560,0-9.580.52-12.060,1.560-2.480,1.040-4.130,2.950-4.950,5.730-.81,2.780-1.220,7.260-1.220,13.440v2.010Z"/>
+              <path class="letter" d="M295.22,114h8.980v9.260c3.420-6.760,10.130-10.150,20.120-10.150,11.130,0,17.790,3.380,19.980,10.150,4.080-6.950,11.030-10.430,20.860-10.430,5.470,0,9.830.74,13.100,2.230,3.260,1.490,5.640,3.840,7.120,7.050,1.490,3.220,2.230,7.510,2.230,12.890v41.120h-9.410v-41.870c0-5.260-.99-8.860-2.990-10.820-1.990-1.960-5.680-2.940-11.050-2.940-3.580,0-6.940.54-10.080,1.630-3.140,1.080-5.330,2.960-6.580,5.620-.97,2.360-1.450,5.790-1.450,10.290v38.080h-9.550v-41.120c-.14-3.980-.57-6.950-1.290-8.890-.72-1.950-2.050-3.320-4-4.120-1.950-.8-5.010-1.200-9.190-1.200-6.560,0-11.170,1.610-13.840,4.840-2.670,3.230-4,8.180-4,14.850v35.640h-8.980v-62.130Z"/>
+              <rect class="letter" x="392.71" y="114" width="9.41" height="62.13"/>
+              <path class="letter" d="M407.21,114h8.380v8.100c2.360-3.630,5.290-6.130,8.800-7.500,3.510-1.370,7.670-2.050,12.480-2.050,5.660,0,10.110.69,13.350,2.090,3.240,1.390,5.590,3.720,7.050,7,1.460,3.280,2.190,7.730,2.190,13.370v41.120h-9.400v-40.420c0-4.200-.39-7.380-1.170-9.550-.78-2.170-2.230-3.700-4.370-4.600-2.130-.89-5.360-1.340-9.670-1.340-12.260,0-18.390,5.940-18.390,17.820v38.080h-9.260v-62.130Z"/>
+              <path class="letter" d="M518.55,87.62v88.510h-9.120l.46-7.990c-1.440,2.320-3.180,4.110-5.220,5.380-2.040,1.270-4.260,2.140-6.650,2.610-2.390.47-5.160.71-8.290.71-5.420,0-9.800-.75-13.140-2.260-3.340-1.510-5.830-3.650-7.500-6.420-1.660-2.770-2.760-6.040-3.310-9.810-.54-3.770-.81-8.460-.81-14.070,0-6.790.58-12.380,1.730-16.780,1.150-4.400,3.450-7.870,6.880-10.410,3.430-2.550,8.390-3.820,14.870-3.820,5.160,0,9.570.54,13.210,1.630,3.640,1.080,6.230,3.400,7.760,6.930v-34.190h9.120ZM474.67,143.97c0,7.140.44,12.440,1.310,15.900.94,3.700,2.700,6.220,5.270,7.560,2.570,1.340,5.990,2.010,10.250,2.010,5.470,0,9.490-.87,12.070-2.620,2.580-1.740,4.200-4.160,4.860-7.260.66-3.100.99-7.580.99-13.440,0-4.780-.12-8.530-.37-11.240-.25-2.710-.92-5.140-2.020-7.300-1.090-2.150-2.900-3.830-5.410-5.020-2.510-1.190-5.990-1.790-10.450-1.790-5.230,0-9.030.87-11.400,2.620-2.370,1.740-3.810,4.110-4.330,7.100-.52,2.990-.78,7.480-.78,13.460"/>
+            </g>
+          </g>
+          <path class="reg" id="reg" d="M534.56,78.29c.21,0,.44.02.69.06.24.05.46.14.67.28.21.14.37.34.49.61.11.27.15.63.1,1.08-.05.45-.17.79-.36,1.03-.19.23-.43.39-.7.47-.28.08-.57.12-.88.12h-3.4v-3.65h3.4ZM529.79,87.67h1.37v-4.54h3.48c.44,0,.77.07,1.01.21.24.14.41.32.51.55s.17.49.19.77c.02.28.03.57.04.86,0,.29.02.56.06.82l.22,1.34h1.62c-.14-.22-.25-.42-.31-.59-.06-.17-.1-.34-.12-.5-.02-.17-.03-.36-.03-.59,0-.23-.02-.51-.04-.86-.04-.46-.08-.82-.12-1.1-.04-.28-.1-.51-.18-.68-.08-.18-.2-.33-.35-.47-.15-.13-.37-.29-.64-.46.34-.26.62-.5.83-.73.21-.23.36-.5.46-.8.09-.3.13-.67.11-1.12-.04-.59-.16-1.07-.35-1.43-.2-.36-.46-.63-.77-.82-.32-.18-.67-.3-1.05-.37-.38-.06-.79-.09-1.2-.08h-4.74v10.59ZM541.89,82.66c0,1.18-.23,2.29-.67,3.32-.44,1.02-1.04,1.92-1.82,2.7-.77.77-1.68,1.38-2.7,1.82-1.02.44-2.12.66-3.3.66-.95,0-1.84-.14-2.69-.42-.85-.28-1.63-.68-2.33-1.2-.7-.52-1.32-1.13-1.84-1.84-.51-.71-.92-1.48-1.2-2.33-.28-.85-.43-1.74-.43-2.68,0-.95.14-1.84.42-2.69.28-.85.68-1.63,1.2-2.34.52-.71,1.13-1.33,1.840-1.850.71-.52,1.48-.92,2.33-1.210.85-.28,1.74-.43,2.68-.43,1.18,0,2.29.23,3.320.67,1.030.44,1.930,1.050,2.710,1.830.78.77,1.39,1.68,1.83,2.7.44,1.02.67,2.12.67,3.3M543,82.66c0-1.06-.17-2.08-.49-3.030-.32-.96-.78-1.840-1.370-2.640-.59-.8-1.28-1.490-2.080-2.090-.8-.58-1.680-1.040-2.640-1.360-.96-.33-1.970-.49-3.030-.49-1.070,0-2.090.17-3.050.49-.96.32-1.840.78-2.640,1.360-.8.59-1.490,1.280-2.090,2.090-.58.8-1.040,1.680-1.360,2.640-.32.96-.48,1.970-.48,3.030,0,1.070.17,2.090.49,3.040.33.96.77,1.840,1.370,2.640.58.8,1.280,1.490,2.070,2.080.8.59,1.680,1.040,2.640,1.370.96.32,1.970.48,3.040.49,1.060,0,2.080-.18,3.030-.5.96-.32,1.840-.78,2.640-1.360.8-.58,1.490-1.280,2.080-2.070.58-.8,1.050-1.680,1.370-2.630.33-.96.49-1.970.49-3.040"/>
+          <text class="tagline" id="tagline" x="281" y="212" text-anchor="middle">World&#8217;s most trusted Bacopa</text>
+          <g class="mono" id="mono">
+            <path id="brain" d="M404.06,99.63c-.03-.12-.08-.24-.13-.36-.05-.11-.09-.23-.11-.31-.02-.13-.01-.27,0-.43,0-.15.01-.31,0-.46-.07-.66-.47-1.55-1.18-1.94-.06-.04-.14-.06-.21-.08-.05-.02-.13-.04-.15-.05-.02-.02-.05-.12-.06-.17-.02-.08-.05-.16-.08-.23-.59-1.08-1.59-1.79-2.89-2.04-.34-.07-.35-.07-.38-.11-.04-.04-.11-.11-.27-.22-.22-.14-.49-.21-.79-.21-.16,0-.32.02-.5.05-.07.01-.14.05-.19.08-.03.02-.08.04-.1.05-.06-.01-.26-.12-.37-.18-.13-.07-.26-.13-.34-.16-.21-.08-.63-.21-1.05-.21-.04,0-.08,0-.12,0-.13,0-.26.05-.39.08-.13.03-.25.07-.34.07h-.01c-.13,0-.25-.04-.38-.07-.17-.04-.36-.09-.61-.09-.05,0-.1,0-.14,0-.34.03-.58.16-.77.27-.1.06-.19.11-.26.13h0s-.07-.02-.11-.04c-.05-.02-.12-.05-.19-.05-.05,0-.11,0-.17,0-1.26,0-3.65,1.32-4.06,2.45-.05.13-.06.21-.07.25q-.01.05-.17.24c-.92,1.09-1.08,2.55-.39,3.63.04.06.1.11.15.16.02.02.05.05.06.06.02.05.03.15.05.25.02.12.04.26.07.37.37,1.09,1.58,1.49,2.58,1.62.45,1.33,1.74,2,3.85,2,.32,0,.65-.02,1.02-.05.06.22.2.41.32.58.08.11.15.2.19.29.06.12.1.3.14.5.04.19.09.39.15.56.17.46.81,1.66,1.63,1.74.03,0,.06,0,.09,0,.55,0,.71-.47.84-.86.08-.22.15-.44.28-.55.14-.12.51-.17.81-.21.19-.03.38-.05.53-.09,1.14-.32,1.54-.91,1.66-1.39.48-.05,1.24-.21,1.63-.77.1-.15.21-.32.32-.49.07-.12.15-.24.22-.35.59-.89.68-2.33.46-3.29M397.43,106.98s-.09.03-.14.03c-.17,0-.46-.13-.84-.74-.17-.27-.29-.54-.38-.8.47.27,1.08.53,1.76.57l-.41.94ZM399.97,105.22c-.43.18-.98.28-1.52.28-1.77,0-2.71-.84-3.01-1.63.55-.03,1.07-.15,1.53-.36,1.16.69,2.47,1.06,3.82,1.08-.13.26-.4.47-.81.64M403.57,100.87c-.04.62-.19,1.23-.39,1.63-.01-.04-.03-.08-.06-.12,0,0-.23-.33-.46-.33-.11,0-.2.07-.24.19-.04.14.04.27.13.4.07.11.16.24.16.36.03.69-1.01.89-1.12.91-.28.05-.58.07-.88.07-1.09,0-2.27-.33-3.26-.9h0c.05-.16.15-.46-.07-.74-.08-.1-.17-.15-.27-.15s-.2.06-.27.16c-.03.05-.03.1,0,.15.07.15.09.26.06.33-.05.11-.26.19-.48.26-.55.18-1.48.29-2.42.29s-1.71-.11-2.18-.29c-.95-.37-1.47-1.12-1.32-1.9.18-.94,1.13-1.37,2-1.37h.79l-.05.18c-.01.05,0,.11.04.15.06.06.16.14.27.14.18,0,.24-.18.28-.3.02-.05.04-.1.06-.14.25-.42,1.17-.76,2.04-.76.48,0,.86.11,1.03.3.04.04.06.09.08.15.04.1.11.26.3.26.05,0,.1,0,.15-.03.02,0,.03-.02.05-.03.18-.16.08-.41,0-.57.25-.11.5-.41.62-.64.13-.25.09-.39.03-.47-.07-.1-.15-.14-.24-.14-.2,0-.29.22-.37.4-.02.04-.04.09-.05.1-.16.23-.33.26-.46.26s-.29-.04-.46-.08c-.16-.04-.34-.09-.52-.1-.06,0-.13,0-.19,0-.54,0-1.17.12-1.61.31-.11.05-.25.14-.39.24-.11.08-.3.21-.36.22h0s-.08,0-.13-.02c-.06-.02-.13-.04-.21-.04-.04,0-.1,0-.17.01-.09,0-.19.02-.26.02-.02,0-.03,0-.04,0-.08-.11-.14-.26-.19-.46-.01-.05-.02-.13-.03-.22-.03-.26-.06-.61-.36-.61-.04,0-.07,0-.11.02-.29.09-.19.63-.06,1.06.01.04.04.1.09.21,0,.02.02.04.03.06-.71.09-1.35.4-1.75.86-.3.35-.46.77-.46,1.23-.62-.08-1.36-.34-1.76-.85-.23-.3-.31-.65-.25-1.04.06-.34.41-.67.71-.67.16,0,.28.1.36.28.12.27.06.49.02.67-.03.12-.06.23-.03.33.04.14.2.2.32.2.06,0,.11-.02.15-.04.14-.1.23-.77.23-.8-.01-.89-.57-1.21-1.04-1.21s-.94.3-1.19.77c-.39-.75-.18-1.92.32-2.54.25-.3.41-.36.84-.42.07,0,.13-.07.13-.14l.02-.2c0-.07-.04-.13-.1-.16-.01,0-.02,0-.04-.01-.06-.02-.14-.05-.24-.05-.03,0-.05,0-.08.01.23-.46,1.19-1.13,1.71-1.4.65-.33,1.2-.5,1.69-.53l-.27.38c-.22.19-.53.38-.86.57-.81.48-1.72,1.03-1.74,1.96,0,.02,0,.38.15.55.05.05.11.08.18.08.01,0,.03,0,.04,0,.1-.02.16-.07.19-.11.08-.12.05-.28.03-.41,0-.04-.02-.08-.01-.1,0-.59.8-1.06,1.49-1.47.33-.2.65-.38.86-.57.14-.13.26-.29.38-.44.14-.19.28-.36.44-.48.26-.18.58-.28.9-.28.1,0,.19,0,.28.03-.36.39-.53.8-.52,1.25,0,.09.03.21.06.31.02.06.04.16.04.19-.01.03-.09.11-.13.15-.05.06-.11.11-.14.17-.14.23-.23.48-.29.77-.22-.11-.48-.16-.77-.17l.07-.39s0-.08-.03-.12c-.02-.03-.06-.05-.1-.06l-.22-.04s-.02,0-.03,0c-.03,0-.07.01-.09.03-.09.07-.11.2-.14.36-.01.06-.02.13-.03.15-.08.2-.21.29-.38.4-.13.08-.27.18-.39.34-.13.16-.2.36-.27.55-.07.18-.13.35-.23.44-.02.02-.04.03-.1.03-.02,0-.05,0-.07,0-.03,0-.05,0-.08,0-.03,0-.14,0-.21.08-.08.09-.07.22-.06.32,0,.06.05.1.1.12.13.05.25.07.35.07.48,0,.66-.43.82-.81.08-.2.17-.41.29-.53.19-.2.56-.34.92-.34.25,0,.46.07.58.19,0,.03.02.08.04.13.15.54.32,1.07.67,1.07.07,0,.14-.02.2-.07.08-.06.11-.13.12-.18.02-.14-.08-.25-.17-.34-.02-.03-.06-.06-.06-.08-.36-.67-.17-1.56.42-1.99.05-.03.11-.06.17-.09.13-.05.27-.12.36-.26.03-.04.03-.09.02-.13-.07-.23-.23-.27-.31-.27-.11,0-.22.05-.32.11-.04-.36.04-.66.23-.89.25-.31.69-.48,1.22-.48.4,0,.82.11,1.16.29-.37.31-.64.91-.69,1.33-.01.11,0,.22,0,.33,0,.12,0,.25-.01.34-.01.04-.09.16-.15.26-.11.17-.24.36-.3.54-.07.21-.3,1.2-.3,1.43,0,.31.18.34.24.34.18,0,.33-.22.39-.42.06-.2.09-.41.13-.61.08-.52.17-1.01.65-1.29,0,0,.04-.01.06-.02.16-.06.37-.13.38-.31,0-.11-.06-.19-.2-.26-.05-.03-.11-.04-.16-.04s-.1.01-.14.03c.04-.43.16-.78.38-1.05.27-.34.69-.55,1.08-.55.49,0,.81.32.86.87,0,.07.06.12.13.14.04,0,.08,0,.11,0,.14,0,.22-.06.26-.11.07-.1.07-.22.05-.35.97.07,2.43,1.21,2.53,2.02,0,.02,0,.1,0,.16-.02.28-.03.48.08.6.05.05.11.08.17.08.06,0,.12-.02.19-.06.07-.04.1-.13.16-.34.36.15.71.69.83,1.07.06.2.16.66.16.8l-.22-.05s-.02,0-.04,0c-.05,0-.1.03-.13.07-.05.07-.1.18-.07.3.04.12.15.17.23.21.06.03.11.05.15.09.28.31.42.97.37,1.77"/>
+            <g id="rays">
+              <path d="M408.83,103.28s-.05-.06-.09-.08l-3.26-1.09s-.03,0-.05,0c-.06,0-.12.04-.15.1l-.09.28c-.03.08.02.16.1.19l3.26,1.09s.03,0,.05,0c.06,0,.12-.04.15-.1l.09-.28s0-.08,0-.12"/>
+              <path d="M388.96,106.88s-.06-.04-.1-.04c-.04,0-.08.02-.11.05l-2.15,2.46s-.04.07-.04.11c0,.04.02.08.05.1l.24.21s.06.04.1.04c.04,0,.08-.02.11-.05l2.15-2.46s.04-.07.04-.11c0-.04-.02-.08-.05-.1l-.24-.21Z"/>
+              <path d="M387.61,92.58s.06.04.1.04h0s.08-.02.11-.05l.22-.24c.06-.06.05-.16,0-.22l-2.15-2.01s-.07-.04-.1-.04c-.04,0-.08.02-.11.05l-.22.24s-.04.07-.04.11c0,.04.02.08.05.11l2.15,2.01Z"/>
+              <path d="M384.84,99.52s.05,0,.08-.03c.08-.06.28-.19.23-.37-.05-.17-.28-.2-.53-.2-.08,0-.16,0-.23,0l-.36.02c-.61.02-1.24.05-1.86.1-.02,0-.04,0-.06.02-.12.06-.18.17-.17.29.01.12.1.22.24.26.05.02.11.03.17.03.09,0,.17-.02.25-.03.06-.01.12-.03.17-.03.22,0,.44,0,.67-.01.46,0,.94-.02,1.41-.04"/>
+              <path d="M404.84,94.35c.03.05.08.08.14.08.02,0,.05,0,.07-.02l2.5-1.29c.07-.04.1-.13.06-.2l-.14-.27s-.05-.06-.09-.08c-.02,0-.03,0-.05,0-.03,0-.05,0-.07.02l-2.5,1.29s-.06.05-.08.09c-.01.04,0,.08,0,.12l.14.27Z"/>
+              <path d="M399.49,108.7c-.02-.06-.08-.1-.14-.1-.02,0-.04,0-.05,0l-.28.1s-.07.04-.09.08c-.02.04-.02.08,0,.12l.98,2.6s.04.07.08.09c.02,0,.04.01.06.01.02,0,.04,0,.05,0l.28-.11c.08-.03.12-.12.09-.19l-.98-2.61Z"/>
+              <path d="M396.22,90.39c.11,0,.21-.07.25-.2.04-.11.06-.4.07-.48.03-.44.04-.88.05-1.32,0-.1,0-.21,0-.31,0-.01,0-.05.01-.08.04-.22.06-.44-.05-.57-.05-.06-.12-.09-.2-.09-.02,0-.04,0-.06,0-.16.03-.24.21-.26.3-.02.12-.03.33-.05.52,0,.06,0,.11,0,.16v.17c-.05.48-.1,1.2-.05,1.58.02.19.14.32.29.32"/>
+              <path d="M385.27,103.37s-.06,0-.09,0c-.02,0-.03,0-.05.02l-1.66.93s-.04.03-.05.05c-.11.18-.09.3-.05.37.05.08.13.13.24.13.05,0,.11-.01.18-.03.23-.08,1.45-.78,1.62-.92.14-.11.19-.25.15-.37-.04-.11-.15-.17-.29-.17"/>
+              <path d="M406.25,98.31s-.08,0-.12,0h0s-.04,0-.06.01l-.1.05c-.05.02-.08.07-.09.13l-.02.2c0,.06.02.11.07.14.08.05.16.07.25.07.07,0,.13-.01.18-.03.05,0,.09-.02.13-.02h.06c.09,0,.21,0,.34,0,.16,0,.34,0,.51,0,.4,0,.64-.03.77-.09.2-.09.19-.24.18-.29-.02-.13-.15-.23-.32-.25-.12-.01-.24-.02-.38-.02-.23,0-.47.02-.71.04-.23.02-.46.04-.67.04"/>
+              <path d="M401.52,91.59h0c.06,0,.14-.02.22-.11,0,0,0-.01.01-.02l.97-1.54s.03-.08.02-.12c0-.04-.04-.07-.07-.1l-.21-.12s-.05-.02-.08-.02c-.05,0-.1.02-.13.07l-1.04,1.58s-.03.1,0,.15c.05.1.16.22.31.22"/>
+              <path d="M393.92,109.04s-.02,0-.04,0c-.02,0-.03,0-.05,0l-.16.05c-.05.02-.09.07-.1.12l-.21,1.74s0,.01,0,.02c0,.24.16.36.31.36.11,0,.25-.08.3-.29.05-.27.21-1.44.18-1.71,0-.1-.08-.27-.23-.3"/>
+              <path d="M404.64,106.77s-.04-.04-.08-.07c-.42-.39-.43-.39-.46-.41-.04-.02-.08-.03-.12-.03-.09,0-.18.05-.24.14-.06.1-.07.21-.02.32.03.06.09.13.43.45.03.03.06.06.08.07.07.07.67.65.75.68.09.04.17.04.22.04h0s.06,0,.09,0h0c.07,0,.13-.06.14-.13.02-.12,0-.21-.07-.33-.08-.14-.63-.64-.74-.74"/>
+              <path d="M391.24,90.68c.07.13.17.2.28.2.13,0,.27-.1.27-.33,0-.11-.17-.73-.21-.86-.22-.79-.27-.82-.32-.86-.05-.04-.11-.06-.17-.06-.08,0-.16.04-.22.1-.07.08-.1.19-.08.31.03.21.36,1.32.45,1.49"/>
+              <path d="M383.6,95.08c.01.06.06.1.12.11.2.04.46.17.71.3.27.14.53.27.76.31.01,0,.03,0,.04,0,.03,0,.2,0,.26-.09.07-.09.06-.18.05-.24-.05-.17-.25-.27-.38-.33-.01,0-.03-.01-.04-.02-.18-.09-.94-.44-1.18-.49,0,0-.02,0-.03,0-.03,0-.06-.01-.1-.01-.07,0-.17.03-.24.16-.02.03-.02.07-.01.1l.05.2Z"/>
+            </g>
+            <g id="folds">
+              <path d="M400.25,96.84c-.05,0-.1,0-.15,0-.1,0-.24.05-.38.09-.06.02-.14.04-.18.05-.03-.02-.07-.05-.1-.07-.07-.05-.14-.1-.2-.13-.4-.18-.71-.19-1.1-.2h0c-.01-.12.02-.23.1-.33.19-.25.61-.36.92-.36.04,0,.08,0,.12,0,.16.02.28.08.42.14.08.04.16.08.25.11.05.02.1.03.14.03.12,0,.21-.07.24-.17.05-.15-.05-.33-.23-.45-.25-.16-.59-.25-.95-.25-.56,0-1.09.22-1.38.57-.18.23-.27.51-.24.81-.25.06-.6.25-.62.49,0,.09.01.16.06.21.03.03.09.07.18.07.13,0,.27-.08.42-.15.06-.03.14-.07.17-.08.1-.03.26-.04.42-.04.47,0,.89.12,1.06.3.07.07.1.15.1.25,0,.14-.07.18-.19.26-.12.08-.29.19-.26.45,0,.06.05.12.12.13.05.01.11.02.16.02.22,0,.41-.11.55-.29.15-.21.22-.51.17-.78.13-.04.26-.06.39-.06.35,0,.68.15.95.43.39.41.62,1.05.59,1.67-.03.67-.4,1.39-.89,1.75-.17-.13-.48-.32-.7-.32-.14,0-.24.07-.28.2-.08.27.21.38.35.43.04.02.09.04.11.05.37.25.23.71.1.97-.03.05-.02.12.02.16.08.09.17.14.26.14.28,0,.42-.41.44-.57.02-.12,0-.24-.01-.36,0-.05-.02-.12-.02-.16.03-.03.09-.08.14-.11.13-.11.22-.18.27-.24.76-.84.96-2.29.48-3.38-.36-.8-1.03-1.26-1.84-1.26"/>
+              <path d="M400.22,98.98c-.11-.09-.2-.13-.28-.13-.22,0-.24.25-.25.37,0,.05,0,.09-.02.13-.2.77-.84,1.7-2.71,1.7-.36,0-.73-.04-1.12-.1.1-.08.21-.2.14-.45,0-.03-.02-.05-.04-.06-.03-.03-.07-.06-.15-.06-.15,0-.36.13-.75.41-.07.05-.15.1-.17.12-.42.24-1.08.49-1.57.49h-.01c-.06,0-.45-.06-.58-.09,0-.02-.02-.04-.02-.06-.05-.16-.16-.46-.46-.46-.02,0-.05,0-.07,0-.14.02-.22.08-.25.17-.05.16.09.29.19.39.01.01.03.03.04.04.05.11,0,.16-.12.26-.08.07-.19.16-.16.3,0,.03.02.05.04.08l.1.11s.02.02.04.03c.03.02.07.03.11.03.15,0,.37-.14.42-.2.03-.03.05-.07.06-.11.03,0,.05.01.07.02.14.04.23.05.28.06.09,0,.18,0,.27,0,.4,0,.78-.06,1.17-.19.11-.04.28-.13.45-.22.12-.06.27-.14.32-.16,0,0,.01,0,.03,0,.15,0,.45.06.74.12.3.06.62.13.81.13.07,0,.14,0,.21,0,1.57,0,3.2-.79,3.31-2.54,0-.05-.02-.1-.06-.13"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="line">
+        <h1 class="strap" aria-label="Think Faster. Stay Clear.">
+          <span class="fast-wrap" aria-hidden="true"><span class="speed" id="speed"></span><span class="fast" id="fast">Think Faster.</span></span>
+          <span class="clear" id="clear" aria-hidden="true">
+            <span class="clear-frost">Stay Clear.</span>
+            <span class="clear-glass">Stay Clear.</span>
+          </span>
+        </h1>
+      </div>
+    </div>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <linearGradient id="leaf-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#55953f"/>
+          <stop offset="1" stop-color="#cfe7a6"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </section>
+
+  <section class="film" id="film" aria-labelledby="film-title">
+    <h2 class="sr-only" id="film-title">From bacopa leaf to capsule to mind</h2>
+    <p class="sr-only">Traceable and sustainable bacopa. Consistent standardization: nine bioactives, each tested by HPLC (USP), held in a capsule. Working through neurotransmission, neuroprotection and the structure of neurons. Every millisecond counts: 1 ms, one spike; 0.5-1 ms, one handover; 100s of ms, one decision.</p>
+    <div class="film-sticky" id="film-sticky">
+      <canvas class="film-canvas" id="film-canvas" aria-hidden="true"></canvas>
+      <div class="ms-panel glass" id="ms-panel" aria-hidden="true">
+        <h2>Every millisecond counts</h2>
+        <span class="ms-num" style="left: 60px; top: 156px">1 ms</span>
+        <span class="ms-num" style="left: 200px; top: 156px">0.5-1 ms</span>
+        <span class="ms-num" style="left: 340px; top: 146px">100s<br>of ms</span>
+        <span class="ms-sub" style="left: 60px; top: 222px">One spike</span>
+        <span class="ms-sub" style="left: 200px; top: 222px">One handover</span>
+        <span class="ms-sub" style="left: 340px; top: 222px">One decision</span>
+      </div>
+      <div class="film-text" id="film-text" aria-hidden="true">
+        <span class="ft-label" id="ft-label">The plant</span>
+        <p class="ft-big" id="ft-big">Traceable</p>
+        <p class="ft-small" id="ft-small">&amp; sustainable</p>
+      </div>
+      <div class="film-progress" aria-hidden="true"><span id="film-bar"></span></div>
+    </div>
+  </section>
+
+  <div class="evidence" id="evidence">
+    <div class="ev-backdrop" aria-hidden="true"><canvas id="ev-leaves"></canvas></div>
+
+    <!-- Why speed matters -->
+    <section class="chap" id="why-speed" aria-labelledby="speed-title">
+      <div class="chap-inner">
+        <div class="chap-text">
+          <div class="chap-tag"><span class="aud">Why speed matters</span><span>What the brain does<sup>1</sup></span></div>
+          <h2 class="chap-title" id="speed-title">A response is a relay of neurons</h2>
+        </div>
+        <div class="chap-visual">
+          <div class="photo" style="aspect-ratio: 1401 / 1102"><img src="img/tennis.jpg" alt="A tennis player lunging to return a fast ball" loading="lazy" data-parallax></div>
+        </div>
+      </div>
+      <div class="relay anim" id="relay">
+        <div class="relay-pulse" aria-hidden="true"></div>
+        <div class="node">
+          <div class="node-orb glass"><svg class="node-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M4 26h11l4-14 6 26 5-18 3 6h11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <strong>One spike</strong>
+          <p>A neuron&#8217;s electrical signal, fired and gone.</p>
+        </div>
+        <div class="node">
+          <div class="node-orb glass"><svg class="node-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 10c9 0 13 6 13 14s-4 14-13 14M42 10c-9 0-13 6-13 14s4 14 13 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="24" cy="17" r="2" class="nd"/><circle cx="24" cy="24" r="2" class="nd"/><circle cx="24" cy="31" r="2" class="nd"/></svg></div>
+          <strong>One handover</strong>
+          <p>Added each time a signal crosses a synapse.</p>
+        </div>
+        <div class="node">
+          <div class="node-orb glass"><svg class="node-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M4 24s7-12 20-12 20 12 20 12-7 12-20 12S4 24 4 24z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="24" cy="24" r="5.5" class="nd"/></svg></div>
+          <strong>One decision</strong>
+          <p>To see, weigh the evidence and get ready to act.</p>
+        </div>
+      </div>
+      <div class="chap-inner single">
+        <div class="photo" style="aspect-ratio: 1401 / 442"><img src="img/falls.jpg" alt="A man reaching out to catch a woman as she stumbles on a flight of steps" loading="lazy" data-parallax></div>
+        <details class="study">
+          <summary>Study details</summary>
+          <p>1 Purves D et al., Neuroscience; Kandel ER et al., Principles of Neural Science (textbook values: action potential ~1 ms; synaptic delay ~0.5-1 ms). 2 Lupo J, Barnett-Cowan M, Gait &amp; Posture (University of Waterloo). 3 Derived: 100 km/h = 27.8 m/s. 4 The Conversation, Australian Open explainer.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- Adults: reaction time -->
+    <section class="chap" id="adults" aria-labelledby="adults-title">
+      <div class="chap-inner">
+        <div class="chap-text">
+          <div class="chap-tag"><span class="aud">Adults</span>Reaction time</div>
+          <h2 class="chap-title" id="adults-title">Faster, from Week 2</h2>
+          <div class="big">
+            <span class="big-num"><span class="arrow">&#8595;</span><span class="count" data-to="338">338</span><small>ms</small></span>
+            <span class="big-label">Week 6</span>
+            <span class="big-sub">Effect size d = 0.67</span>
+          </div>
+          <div class="strip"><span><b>7 of 7</b>weeks ahead</span><span><b>p = .017</b>arm &#215; week</span></div>
+          <details class="study">
+            <summary>Claims and study details</summary>
+            <p class="det-sub">7 of 7 weeks ahead: every week from Week 2. Arm &#215; week: interaction &#183; n = 127.</p>
+            <div class="claims"><span class="claims-label">Mind the claims</span><span class="claim">Supports faster responses*</span><span class="claim">Supports focus and attention*</span><span class="claim">Faster responses from Week 2 of daily use*</span></div>
+            <p>Flanker mean correct reaction time, model-estimated, baseline-adjusted MMRM (AR(1)); participants who completed the optional task battery (n = 127). Both arms sped up with practice (week effect p &lt; .001). Week 1 difference &#8593;233 ms (95% CI &#8593;3 to &#8593;464). Week 6: &#8595;338 ms (95% CI &#8595;662 to &#8595;14). Exploratory; not corrected across cognitive outcomes, and no single week is significant after Holm correction. Source: Radicle Science study report, 2026; data on file. *Structure/function wording, to be confirmed per market.</p>
+          </details>
+        </div>
+        <div class="chap-visual">
+          <div class="viz glass anim">
+            <div class="viz-head"><span class="viz-title">Reaction time by arm</span><span class="viz-note">Lower = faster</span></div>
+            <div class="legend"><span><i></i>BacoMind&#174;</span><span><i class="pl"></i>Placebo</span></div>
+            <div class="chart" data-chart="reaction"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Working professionals: energy and fatigue -->
+    <section class="chap flip" id="energy" aria-labelledby="energy-title">
+      <div class="chap-inner">
+        <div class="chap-text">
+          <div class="chap-tag"><span class="aud">Working professionals</span>Energy &amp; fatigue</div>
+          <h2 class="chap-title" id="energy-title">Energy for busy days</h2>
+          <div class="big">
+            <span class="big-num"><span class="arrow">&#8595;</span><span class="count" data-to="7.16" data-dec="2">7.16</span></span>
+            <span class="big-label">Fatigue vs placebo</span>
+            <span class="big-sub">PROMIS Fatigue 8A &#183; p = .001</span>
+          </div>
+          <div class="strip"><span><b>&#8595;21%</b>fatigue score, BacoMind&#174;</span></div>
+          <details class="study">
+            <summary>Claims and study details</summary>
+            <p class="det-sub">Fatigue score, BacoMind&#174;: 61.96 &#8594; 48.73 &#183; placebo &#8595;11%.</p>
+            <div class="claims"><span class="claims-label">Mind the claims</span><span class="claim">Helps reduce feelings of tiredness*</span><span class="claim">Supports everyday energy*</span><span class="claim">Helps you feel less tired on busy days*</span></div>
+            <p>Post-hoc analysis, per-protocol completers (all surveys + &#8805;80% product use), non-gaming healthy working adults: 21 BacoMind&#174; vs 23 placebo; PROMIS 8A T-scores. Lines are observed means; differences vs placebo are baseline-adjusted, so they do not equal the difference of the slopes. Fatigue &#8595;7.16 (95% CI &#8595;2.84 to &#8595;11.47). Cognitive abilities (p = .061) and function (p = .173) not significant. Full cohort (ITT, n = 404): no between-arm difference. Gaming cohort (n = 47): primary endpoint favoured placebo. Source: Radicle Science per-protocol table, 19 Oct 2026; data on file. *Structure/function wording, to be confirmed per market.</p>
+          </details>
+        </div>
+        <div class="chap-visual">
+          <div class="viz glass anim">
+            <div class="viz-head"><span class="viz-title">Performance matters</span><span class="viz-note">Difference vs placebo, 95% CI</span></div>
+            <div class="viz-note" style="margin-bottom: 6px">Baseline-adjusted &#183; right = favours BacoMind&#174;</div>
+            <div class="chart" data-chart="forest"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Perimenopause: clarity -->
+    <section class="chap" id="clarity" aria-labelledby="clarity-title">
+      <div class="chap-inner">
+        <div class="chap-text">
+          <div class="chap-tag"><span class="aud">Perimenopause</span>Mental clarity &amp; focus</div>
+          <h2 class="chap-title" id="clarity-title">Clarity, she deserves</h2>
+          <div class="big">
+            <span class="big-num"><span class="count" data-to="8">8</span> of 8</span>
+            <span class="big-label">Weeks ahead of placebo</span>
+            <span class="big-sub">Cognitive function, primary endpoint &#183; p = .014</span>
+          </div>
+          <div class="photo" style="aspect-ratio: 604 / 352; max-width: 420px"><img src="img/portrait.jpg" alt="A smiling woman holding a pale pink flower" loading="lazy" data-parallax></div>
+          <details class="study">
+            <summary>Claims and study details</summary>
+            <div class="claims"><span class="claims-label">Mind the claims</span><span class="claim">Supports mental clarity*</span><span class="claim">Supports healthy cognitive function during midlife*</span><span class="claim">Supports focus*</span></div>
+            <p>Population: 1 Women&#8217;s Health (Lond) 2022, PMID 35758176 (n = 947). 2 Menopause 2026, PMID 41190624. 3 Menopause 2024, PMID 38442310. 4 BMC Women&#8217;s Health 2023, PMID 37452317. 5 Mayo Clin Proc 2023, PMID 37115119. Trial: exploratory subpopulation analysis, n = 30; model-estimated PROMIS 8A scores; labels = BacoMind&#174; minus placebo; &#8224;Holm-adjusted p &lt; .05. P values: arm &#215; week &#215; menstrual status. Week 8: cognitive function &#8593;5.5 (95% CI &#8595;1.4 to &#8593;12.4) and fatigue &#8595;9.8 (95% CI &#8595;18.8 to &#8595;0.7) not significant after Holm correction. Source: Radicle Science study report, 2026; data on file. *Structure/function wording, to be confirmed per market.</p>
+          </details>
+        </div>
+        <div class="chap-visual">
+          <div class="viz glass anim" id="clarity-viz">
+            <div class="viz-head">
+              <span class="viz-title">With BacoMind&#174;, week by week</span>
+              <div class="seg" role="group" aria-label="Choose a measure">
+                <button type="button" id="seg-cog" aria-pressed="true">Cognitive function</button>
+                <button type="button" id="seg-fat" aria-pressed="false">Fatigue</button>
+              </div>
+            </div>
+            <div class="viz-note" id="clarity-note">Cognitive function &#183; primary &#183; higher = better</div>
+            <div class="legend" style="margin-top: 6px"><span><i></i>BacoMind&#174;</span><span><i class="pl"></i>Placebo</span></div>
+            <div class="chart" data-chart="clarity-cog" id="chart-cog"></div>
+            <div class="chart" data-chart="clarity-fat" id="chart-fat" hidden></div>
+            <div class="viz-foot" id="pills-cog"><span class="viz-pill">8 of 8 weeks ahead</span><span class="viz-pill">p = .014</span></div>
+            <div class="viz-foot" id="pills-fat" hidden><span class="viz-pill">&#8595;40% within arm, Wk 1 &#8594; 8</span><span class="viz-pill">p = .017</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Children: learning and memory -->
+    <section class="chap flip" id="children" aria-labelledby="children-title">
+      <div class="chap-inner">
+        <div class="chap-text">
+          <div class="chap-tag"><span class="aud">Children</span>Learning &amp; memory</div>
+          <h2 class="chap-title" id="children-title">Learn more</h2>
+          <div class="big">
+            <span class="big-num">p &lt; 0.05</span>
+            <span class="big-label">Significant</span>
+            <span class="big-sub">Improvement in children requiring IEP</span>
+          </div>
+          <details class="study">
+            <summary>Claims and study details</summary>
+            <div class="claims"><span class="claims-label">Mind the claims</span><span class="claim">Helps kids learn &amp; remember*</span><span class="claim">Supports sharper recall*</span><span class="claim">Helps retain new information*</span></div>
+            <p>Study in children requiring an Individual Education Programme: [CONFIRM REFERENCE, design, n, dose and duration]. Recommended dose for children: 225 mg/day. Natural Remedies, data on file. *Structure/function wording, to be confirmed per market.</p>
+          </details>
+        </div>
+        <div class="chap-visual">
+          <div class="photo" style="aspect-ratio: 599 / 352"><img src="img/classroom.jpg" alt="Children in a classroom raising their hands" loading="lazy" data-parallax></div>
+          <div class="viz glass anim">
+            <div class="rings">
+              <div class="ring-item">
+                <svg viewBox="0 0 160 160" role="img" aria-label="93% of children improved in memory acquisition and retention">
+                  <circle class="ring-bg" cx="80" cy="80" r="64"/>
+                  <circle class="ring-fg" cx="80" cy="80" r="64" pathLength="100" stroke-dasharray="100 100" style="stroke-dashoffset: 7" transform="rotate(-90 80 80)"/>
+                  <text class="ring-num" x="80" y="92" text-anchor="middle"><tspan class="count" data-to="93">93</tspan>%</text>
+                </svg>
+                <strong>Memory acquisition &amp; retention</strong>
+                <span>Children who improved</span>
+              </div>
+              <div class="ring-item">
+                <svg viewBox="0 0 160 160" role="img" aria-label="83% of children improved in total memory score">
+                  <circle class="ring-bg" cx="80" cy="80" r="64"/>
+                  <circle class="ring-fg" cx="80" cy="80" r="64" pathLength="100" stroke-dasharray="100 100" style="stroke-dashoffset: 17" transform="rotate(-90 80 80)"/>
+                  <text class="ring-num" x="80" y="92" text-anchor="middle"><tspan class="count" data-to="83">83</tspan>%</text>
+                </svg>
+                <strong>Total memory score</strong>
+                <span>Children who improved</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Elderly: memory -->
+    <section class="chap" id="memory" aria-labelledby="memory-title">
+      <div class="chap-inner">
+        <div class="chap-text">
+          <div class="chap-tag"><span class="aud">Elderly</span>Memory &amp; brain health</div>
+          <h2 class="chap-title" id="memory-title">Memories count</h2>
+          <div class="big">
+            <span class="big-num"><span class="count" data-to="4">4</span> of 4</span>
+            <span class="big-label">Memory endpoints improved vs placebo</span>
+            <span class="big-sub">All p &lt; 0.05</span>
+          </div>
+          <p class="quiet">Immediate recall, delayed recall, memory disturbance and learning</p>
+          <details class="study">
+            <summary>Claims and study details</summary>
+            <div class="claims"><span class="claims-label">Mind the claims</span><span class="claim">Supports memory as you age*</span><span class="claim">Helps sharpen recall &amp; learning*</span><span class="claim">Supports everyday memory performance*</span><span class="claim">Supports healthy brain aging*</span></div>
+            <p>Randomized, double-blind, placebo-controlled study in the elderly, 12 weeks: [CONFIRM REFERENCE, n and dose]. All BacoMind&#174; changes vs placebo p &lt; 0.05. Memory disturbance: lower impact score is better; its 50% reduction is shown as an improvement. Immediate recall: BacoMind&#174; 7.9 &#8594; 9.8. Natural Remedies, data on file. *Structure/function wording, to be confirmed per market.</p>
+          </details>
+        </div>
+        <div class="chap-visual">
+          <div class="photo" style="aspect-ratio: 586 / 352"><img src="img/chess.jpg" alt="An older man smiling as he plays chess" loading="lazy" data-parallax></div>
+          <div class="viz glass anim">
+            <div class="viz-head"><span class="viz-title">Improvement at 12 weeks</span><div class="legend"><span><i class="bar"></i>BacoMind&#174;</span><span><i class="bar pl"></i>Placebo</span></div></div>
+            <div class="chart" data-chart="memory"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Elderly: cognitive longevity -->
+    <section class="chap flip" id="longevity" aria-labelledby="longevity-title">
+      <div class="chap-inner">
+        <div class="chap-text">
+          <div class="chap-tag"><span class="aud">Elderly</span>Cognitive longevity</div>
+          <h2 class="chap-title" id="longevity-title">Cognitive Longevity</h2>
+          <div class="big">
+            <span class="big-num">~<span class="count" data-to="7">7</span><small>years</small></span>
+            <span class="big-label">Of cognitive age added with BacoMind&#174;</span>
+            <span class="big-sub">AVLT total learning &#183; adults over 55 &#183; 12 weeks</span>
+          </div>
+          <div class="photo" style="aspect-ratio: 639 / 433; max-width: 420px"><img src="img/woman55.jpg" alt="A woman in a grey blazer standing outdoors" loading="lazy" data-parallax></div>
+        </div>
+        <div class="chap-visual">
+          <div class="viz glass anim">
+            <div class="viz-head"><span class="viz-title">AVLT total learning, baseline &#8594; 12 weeks</span><div class="legend"><span><i></i>BacoMind&#174;</span><span><i class="pl"></i>Placebo</span></div></div>
+            <div class="viz-note">Randomized, double-blind, placebo-controlled &#183; 98 healthy adults over 55 &#183; BacoMind&#174; 300 mg/day</div>
+            <div class="chart" data-chart="avlt"></div>
+          </div>
+          <div class="effect"><span class="k">Treatment effect</span><b>+4.7</b><span>AVLT points vs placebo</span><span class="k">p = 0.011</span></div>
+        </div>
+      </div>
+      <div class="sum anim">
+        <div class="sum-rows">
+          <h3>Translating the effect into cognitive age</h3>
+          <div class="eq-row glass"><b>+4.7 points</b><span>Net effect vs placebo over 12 weeks</span></div>
+          <div class="eq-op"><span aria-hidden="true">&#247;</span><span class="sr-only">divided by</span></div>
+          <div class="eq-row glass"><b>0.7 points</b><span>Typical decline per year, ages 55&#8211;80</span></div>
+          <div class="eq-op"><span aria-hidden="true">=</span><span class="sr-only">equals</span></div>
+          <div class="eq-row final"><b>~7 years</b><span>Cognitive age equivalent</span></div>
+        </div>
+        <div class="photo"><img src="img/hourglass.jpg" alt="An hourglass with a brain resting in its lower bulb" loading="lazy" data-parallax></div>
+      </div>
+      <div class="chap-inner single">
+        <details class="study">
+          <summary>Claims and study details</summary>
+          <div class="claims"><span class="claims-label">Mind the claims</span><span class="claim">Supports cognitive longevity*</span><span class="claim">Helps learning keep pace with age*</span><span class="claim">Supports memory after 55*</span></div>
+          <p>Morgan A, Stevens J. J Altern Complement Med 2010;16(7):753&#8211;9 (doi:10.1089/acm.2009.0342): randomized, double-blind, placebo-controlled trial in 98 healthy adults over 55; BacoMind&#174; 300 mg/day for 12 weeks; Rey AVLT total learning (sum of trials 1&#8211;5), group means shown; treatment effect p = 0.011. Normative decline &#8776; 0.7 points/year (ages 55&#8211;80): Ivnik RJ et al. Psychol Assess 1990;2(3):304&#8211;12 (doi:10.1037/1040-3590.2.3.304). Cognitive-age equivalent = net effect &#247; normative decline (4.7 &#247; 0.7 &#8776; 6.7 years). *Structure/function wording, to be confirmed per market.</p>
+        </details>
+      </div>
+    </section>
+  </div>
+
+  <!-- Inside the brain: pinned journey -->
+  <section class="inside" id="inside" aria-labelledby="inside-title">
+    <h2 class="sr-only" id="inside-title">Inside the brain</h2>
+    <ul class="sr-only">
+      <li>Acetylcholine boost: bacosides inhibit acetylcholinesterase, so acetylcholine stays active longer.</li>
+      <li>Serotonin and GABA balance: bacosides support the brain&#8217;s calming neurotransmitters.</li>
+      <li>Free radical neutralisation: bacosides neutralise free radicals and help prevent lipid peroxidation.</li>
+      <li>Axon and dendrite repair: preclinical studies suggest bacosides promote the growth of dendritic branches.</li>
+      <li>A nourished brain: reaction time, memory, focus, attention and clarity.</li>
+    </ul>
+    <div class="film-sticky" id="inside-sticky">
+      <canvas class="film-canvas" id="inside-canvas" aria-hidden="true"></canvas>
+      <div class="film-text" id="in-text" aria-hidden="true">
+        <span class="ft-label" id="in-label">Neurotransmitter modulation</span>
+        <p class="ft-big" id="in-big">Acetylcholine boost</p>
+        <p class="ft-small" id="in-small">Bacosides inhibit acetylcholinesterase, keeping acetylcholine active for longer.*</p>
+      </div>
+      <div class="film-progress" aria-hidden="true"><span id="in-bar"></span></div>
+    </div>
+  </section>
+
+  <div class="evidence" id="after">
+    <!-- How BacoMind works -->
+    <section class="chap" id="how" aria-labelledby="how-title">
+      <div class="chap-inner single">
+        <div class="chap-text">
+          <div class="chap-tag"><span class="aud">How it works</span></div>
+          <h2 class="chap-title" id="how-title">How BacoMind&#174; works</h2>
+          <p class="lead">Nine bioactives, each tested by HPLC (USP), working through neurotransmission, neuroprotection and the structure of neurons.</p>
+        </div>
+      </div>
+      <div class="mech anim">
+        <div class="mech-card glass">
+          <svg class="mk" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M20 15V5M20 25v10M15 20H5M25 20h10M16.5 16.5 9 9M23.5 23.5 31 31M23.5 16.5 31 9M16.5 23.5 9 31M9 9l-3 1M9 9 8 5M31 31l3-1M31 31l1 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <h3>Neuronal morphological changes</h3>
+          <p>Increases number of dendrites &amp; dendrite branching</p>
+        </div>
+        <div class="mech-card glass">
+          <svg class="mk" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 33 9v10c0 8-6 14-13 17C13 33 7 27 7 19V9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 20l4 4 8-9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>Neuroprotection</h3>
+          <p>Inhibits ROS and PARP; provides neuroprotection</p>
+        </div>
+        <div class="mech-card glass">
+          <svg class="mk" viewBox="0 0 40 40" aria-hidden="true"><path d="M4 8c8 0 12 5 12 12S12 32 4 32M36 8c-8 0-12 5-12 12s4 12 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="20" cy="14" r="1.6" fill="currentColor"/><circle cx="20" cy="20" r="1.6" fill="currentColor"/><circle cx="20" cy="26" r="1.6" fill="currentColor"/></svg>
+          <h3>Neurotransmission</h3>
+          <p class="sub">Inhibits COMT and PEP</p>
+          <ul><li>Spares useful dopamine</li><li>Norepinephrine and substance P</li></ul>
+          <p class="sub">Antagonises serotonin receptor (5-HT6)</p>
+          <ul><li>Enhances cholinergic &amp; glutamatergic transmission</li></ul>
+        </div>
+      </div>
+      <div class="outcomes anim"><span class="outcome">Reaction time</span><span class="outcome">Memory</span><span class="outcome">Focus</span><span class="outcome">Attention</span><span class="outcome">Clarity</span></div>
+      <div class="chap-inner single">
+        <details class="study">
+          <summary>The science in full and references</summary>
+          <p class="det-sub">Neurotransmitter modulation (the chemical messengers)</p>
+          <p>Acetylcholine boost: Bacosides inhibit acetylcholinesterase, an enzyme that breaks down acetylcholine. By keeping acetylcholine active in the brain longer, bacopa helps improve memory retention, focus, and overall cognitive processing speed.* Serotonin and GABA balance: Bacosides help regulate mood and ease anxiety by supporting the brain&#8217;s calming neurotransmitters.*</p>
+          <p class="det-sub">Neuroprotection &amp; antioxidant defence</p>
+          <p>Free radical neutralisation: Brain cells are highly vulnerable to oxidative stress. Bacosides act as powerful antioxidants, neutralising free radicals and preventing lipid peroxidation (damage to fat molecules in brain cells).<sup>[1]</sup>* Axon and dendrite repair: Preclinical studies suggest bacosides actively help repair damaged neurons and promote the growth of dendritic branches, the microscopic &#8220;arms&#8221; brain cells use to communicate with one another. This forms the biological basis for improved learning and memory consolidation.*</p>
+          <p>1 PubMed 29676230. 2 PubMed 33434535. 3 PMC6630913. 4 doi:10.1016/j.jff.2017.04.044. 5 doi:10.4196/kjpp.2020.24.1.39. 6 Dethe S et al. Pharmacognosy Magazine 2016;12:482-487. COMT: catechol-O-methyltransferase; PEP: prolyl endopeptidase; PARP: poly (ADP-ribose) polymerase. [1] <a href="https://www.healthline.com/nutrition/bacopa-monnieri-benefits" target="_blank" rel="noopener">Healthline, Bacopa monnieri benefits</a>. *Structure/function wording, to be confirmed per market.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- Safety -->
+    <section class="chap" id="safety" aria-labelledby="safety-title">
+      <div class="chap-inner">
+        <div class="chap-text">
+          <div class="chap-tag"><span class="aud">Safety</span>Tolerability</div>
+          <h2 class="chap-title" id="safety-title">Established safety</h2>
+          <div class="big">
+            <span class="big-num"><span class="count" data-to="100">100</span>%<small>safe</small></span>
+            <span class="big-label">Free of severe side effects over 8 weeks</span>
+            <span class="big-sub">Largest BacoMind&#174; trial &#183; 404 adults &#183; 300 mg/day</span>
+          </div>
+          <div class="photo" style="aspect-ratio: 675 / 437; max-width: 420px"><img src="img/pipette.jpg" alt="A pipette releasing a green drop into glass test tubes" loading="lazy" data-parallax></div>
+        </div>
+        <div class="chap-visual">
+          <div class="viz glass anim">
+            <div class="viz-head"><span class="viz-title">Dose-escalation safety study in healthy adults</span></div>
+            <div class="viz-note" style="margin-bottom: 18px">Randomized, open-label, dose-escalation design</div>
+            <div class="dose">
+              <div class="dose-days"><span>Day 1</span><span>Day 15</span><span>Day 30</span></div>
+              <div class="dose-bar"><span class="d1">300 mg/day</span><span class="d2">450 mg/day</span><i class="dose-marker" aria-hidden="true"></i></div>
+              <div class="dose-assess"><span>Pre-treatment assessment</span><span>Post-treatment assessment</span></div>
+            </div>
+            <div class="strip" style="margin-top: 18px"><span><b>23</b>healthy adults, aged 18&#8211;45</span><span><b>30</b>days</span></div>
+          </div>
+          <div class="ok-card"><span class="k">Outcome</span><b>Met the safety criteria</b><span>No untoward findings; mild GI events settled on their own</span></div>
+          <div class="viz glass anim">
+            <div class="viz-head"><span class="viz-title">Parameters tested for safety</span></div>
+            <div class="viz-note" style="margin-bottom: 16px">Clinical, haematological, biochemical, urine and ECG assessments evaluated short-term safety and tolerability</div>
+            <div class="params">
+              <div class="param"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 4h6v3H9zM9 13l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg></i>Clinical</div>
+              <div class="param"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></i>Haematological</div>
+              <div class="param"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3M7.5 15h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg></i>Biochemical</div>
+              <div class="param"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12l-1.5 16a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1zM7 9h10M7.5 13h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></i>Urine</div>
+              <div class="param"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12h5l2-5 3 10 2.5-7 1.5 2h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg></i>ECG</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chap-inner single">
+        <details class="study">
+          <summary>Claims and study details</summary>
+          <p class="det-sub">Condition: healthy adults. Participants: 23, aged 18&#8211;45. Duration: 30 days. Evaluation: pre &amp; post treatment.</p>
+          <div class="claims"><span class="claims-label">Mind the claims</span><span class="claim">Well tolerated for daily use*</span><span class="claim">Clinically evaluated for safety*</span><span class="claim">Safety studied up to 450 mg/day*</span></div>
+          <p>Latest study: randomized, double-blind, placebo-controlled, 8 weeks, BacoMind&#174; 300 mg/day, 404 adults; no severe side effects reported; Radicle Science study report, 2026; data on file. Dose escalation: Pravina K et al. Safety evaluation of BacoMind in healthy volunteers: a phase I study. Phytomedicine 2007;14(5):301&#8211;8 (doi:10.1016/j.phymed.2007.03.010). *Structure/function wording, to be confirmed per market.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- Formulate -->
+    <section class="chap" id="formulate" aria-labelledby="formulate-title">
+      <div class="chap-inner single">
+        <div class="chap-text" style="align-items: center; text-align: center">
+          <div class="chap-tag"><span class="aud">For business use</span></div>
+          <h2 class="chap-title" id="formulate-title">Formulate with BacoMind&#174;</h2>
+        </div>
+      </div>
+      <div class="reasons-wrap anim">
+        <ul class="reasons left">
+          <li class="reason">Proven at every age</li>
+          <li class="reason">9 bioactives by HPLC</li>
+          <li class="reason">Established safety</li>
+          <li class="reason">Consistent standardization</li>
+        </ul>
+        <div class="eight">
+          <canvas id="eight-leaves" aria-hidden="true"></canvas>
+          <div class="eight-inner"><b>8</b><span>reasons to formulate with BacoMind&#174;</span></div>
+        </div>
+        <ul class="reasons right">
+          <li class="reason">250+ successful launches</li>
+          <li class="reason">Regulatory recognition</li>
+          <li class="reason">Traceable &amp; sustainable</li>
+          <li class="reason">Certified for global shelves</li>
+        </ul>
+      </div>
+      <ul class="formats" aria-label="Formats">
+        <li class="format"><img src="img/f-capsules.jpg" alt="" loading="lazy"><span>Capsules</span></li>
+        <li class="format"><img src="img/f-powder.jpg" alt="" loading="lazy"><span>Powder</span></li>
+        <li class="format"><img src="img/f-chocolates.jpg" alt="" loading="lazy"><span>Chocolates</span></li>
+        <li class="format"><img src="img/f-syrups.jpg" alt="" loading="lazy"><span>Syrups</span></li>
+        <li class="format"><img src="img/f-beverages.jpg" alt="" loading="lazy"><span>Functional Beverages</span></li>
+      </ul>
+      <div class="certs"><img src="img/certs.png" alt="Certifications: USDA Organic, 100% Halal certified, Kosher, India Organic, Non-GMO Project Verified, FSSAI" loading="lazy"></div>
+      <div class="legal">
+        <p>Natural Remedies &#183; <a href="https://naturalremedieshumanhealth.com" target="_blank" rel="noopener">naturalremedieshumanhealth.com</a> &#183; RDBPC: randomized, double-blind, placebo-controlled. Regulatory status and permitted claims vary by market; confirm before use. For business use; not for consumers.</p>
+        <p class="fda">*THESE STATEMENTS HAVE NOT BEEN EVALUATED BY THE FOOD AND DRUG ADMINISTRATION. THIS PRODUCT IS NOT INTENDED TO DIAGNOSE, TREAT, CURE, OR PREVENT ANY DISEASE.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Close: test your reaction time -->
+  <section class="close" id="test" aria-labelledby="test-title">
+    <span class="ft-label">Try it yourself</span>
+    <h2 class="close-title" id="test-title">Test your reaction time</h2>
+    <div class="test-wrap">
+      <div class="test">
+        <button class="test-btn" id="test-btn" type="button" data-state="idle">
+          <span class="ms" id="test-ms">Start</span>
+          <span class="hint" id="test-hint">Tap or press Enter, then wait for green</span>
+        </button>
+        <div class="test-stats"><span>Last <b id="test-last">&#8212;</b></span><span>Best <b id="test-best">&#8212;</b></span></div>
+        <p class="sr-only" id="test-live" aria-live="polite"></p>
+      </div>
+      <div class="qr">
+        <div class="qr-card"><img src="img/qr.png" alt="QR code from the BacoMind brochure" loading="lazy"></div>
+        <span>Or scan the brochure code</span>
+      </div>
+    </div>
+    <p class="strap close-strap">
+      <span class="sr-only">Think Faster. Stay Clear.</span>
+      <span class="fast" aria-hidden="true">Think Faster.</span>
+      <span class="clear close-clear" aria-hidden="true"><span class="clear-frost">Stay Clear.</span><span class="clear-glass">Stay Clear.</span></span>
+    </p>
+    <footer class="site-foot">
+      <span>Bacomind&#174; &#183; World&#8217;s most trusted Bacopa</span>
+      <span>Natural Remedies &#183; <a href="https://naturalremedieshumanhealth.com" target="_blank" rel="noopener">naturalremedieshumanhealth.com</a></span>
+    </footer>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!document.documentElement.lang) document.documentElement.lang = 'en';
+
+  /* Matte sprout leaves drifting through the hero */
+  var canvas = document.getElementById('leaves');
+  var ctx = canvas.getContext('2d');
+  var hero = document.getElementById('hero');
+  var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
+  function makeLeaf(base, tip) {
+    var c = document.createElement('canvas'); c.width = 48; c.height = 24;
+    var g = c.getContext('2d');
+    function leaf() { g.beginPath(); g.moveTo(3, 12); g.bezierCurveTo(14, 1, 32, 1, 46, 12); g.bezierCurveTo(32, 23, 14, 23, 3, 12); g.closePath(); }
+    var lg = g.createLinearGradient(3, 12, 46, 12); lg.addColorStop(0, base); lg.addColorStop(1, tip);
+    leaf(); g.fillStyle = lg; g.fill();
+    g.globalCompositeOperation = 'source-atop';
+    var sg = g.createLinearGradient(0, 2, 0, 22);
+    sg.addColorStop(0, 'rgba(255,255,255,0.16)'); sg.addColorStop(0.5, 'rgba(255,255,255,0)'); sg.addColorStop(1, 'rgba(0,0,0,0.18)');
+    g.fillStyle = sg; g.fillRect(0, 0, 48, 24);
+    g.globalCompositeOperation = 'source-over';
+    g.beginPath(); g.moveTo(5, 12); g.quadraticCurveTo(24, 10.5, 42, 12); g.lineWidth = 1.1; g.strokeStyle = 'rgba(30,60,30,0.28)'; g.stroke();
+    return c;
+  }
+  window.bmMakeLeaf = makeLeaf;
+  var sprites = [['#cfd9c2', '#f7f9f0'], ['#9cc66f', '#e6f2c8'], ['#a9bd52', '#ecebaa'], ['#55953f', '#a8d673'], ['#2a6334', '#6dab4b']].map(function (c) { return makeLeaf(c[0], c[1]); });
+  var leaves = [];
+  function seed() {
+    leaves = [];
+    var count = Math.round(Math.min(90, Math.max(36, (W * H) / 16000)));
+    for (var i = 0; i < count; i++) {
+      var z = Math.random();
+      leaves.push({ x: Math.random() * W, y: Math.random() * H, z: z, c: Math.floor(Math.random() * 5), r: Math.random() * 6.28, spin: (Math.random() < 0.5 ? -1 : 1) * (0.1 + Math.random() * 0.3), tum: Math.random() * 6.28, vx: 4 + Math.random() * 8, vy: -(3 + Math.random() * 7), len: 8 + z * 14 });
+    }
+  }
+  function resize() {
+    var r = hero.getBoundingClientRect();
+    W = r.width; H = r.height;
+    canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+    seed();
+  }
+  var mx = 0, my = 0, tmx = 0, tmy = 0, last = performance.now(), fade = reduce ? 1 : 0;
+  function frame(now) {
+    var hr = hero.getBoundingClientRect();
+    if (!reduce && hr.bottom < 0) { last = now; requestAnimationFrame(frame); return; }
+    var dt = Math.min(0.05, Math.max(0, (now - last) / 1000)); last = now;
+    mx += (tmx - mx) * 0.05; my += (tmy - my) * 0.05;
+    if (fade < 1) fade = Math.min(1, fade + dt * 0.5);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < leaves.length; i++) {
+      var l = leaves[i];
+      if (!reduce) {
+        l.x += l.vx * dt * (0.4 + l.z); l.y += l.vy * dt * (0.4 + l.z);
+        l.r += l.spin * dt; l.tum += dt * (0.5 + l.z);
+        if (l.x > W + 30) l.x = -30; if (l.y < -30) l.y = H + 30;
+      }
+      var px = l.x - mx * 30 * l.z, py = l.y - my * 20 * l.z;
+      var k = l.len / 44, c = Math.cos(l.r) * k, s = Math.sin(l.r) * k, ty = 0.3 + 0.7 * Math.abs(Math.cos(l.tum));
+      ctx.globalAlpha = fade * (0.18 + 0.5 * l.z);
+      ctx.setTransform(DPR * c, DPR * s, -DPR * s * ty, DPR * c * ty, DPR * px, DPR * py);
+      ctx.drawImage(sprites[l.c], -24, -12);
+    }
+    ctx.globalAlpha = 1;
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  resize();
+  var heroRs = null, lastW0 = window.innerWidth;
+  window.addEventListener('resize', function () {
+    clearTimeout(heroRs);
+    heroRs = setTimeout(function () {
+      if (Math.abs(window.innerWidth - lastW0) < 2 && Math.abs(hero.getBoundingClientRect().height - H) < 120) return;
+      lastW0 = window.innerWidth; resize();
+      if (reduce) requestAnimationFrame(frame);
+    }, 150);
+  });
+  requestAnimationFrame(frame);
+
+  /* Spatial tilt */
+  var stage = document.getElementById('stage');
+  if (!reduce && window.gsap) {
+    var rx = gsap.quickTo(stage, 'rotationX', { duration: 0.9, ease: 'power3.out' });
+    var ry = gsap.quickTo(stage, 'rotationY', { duration: 0.9, ease: 'power3.out' });
+    hero.addEventListener('pointermove', function (e) {
+      var r = hero.getBoundingClientRect();
+      var nx = (e.clientX - r.left) / r.width - 0.5, ny = (e.clientY - r.top) / r.height - 0.5;
+      tmx = nx * 2; tmy = ny * 2;
+      ry(nx * 8); rx(-ny * 6);
+    });
+    hero.addEventListener('pointerleave', function () { tmx = 0; tmy = 0; ry(0); rx(0); });
+  }
+
+  /* Hero logo reveal */
+  var tl = null;
+  function buildIntro() {
+    if (!window.gsap || reduce) return null;
+    var lockup = document.getElementById('lockup');
+    var vb = lockup.viewBox.baseVal;
+    var cx = vb.x + vb.width / 2, cy = vb.y + vb.height / 2 - 6;
+    var mono = document.getElementById('mono');
+    var b = mono.getBBox();
+    var mcx = b.x + b.width / 2, mcy = b.y + b.height / 2;
+    var bigScale = window.innerWidth < 560 ? 4.2 : 5.2;
+    var brain = document.getElementById('brain');
+    var rays = gsap.utils.toArray('#rays path');
+    var folds = document.getElementById('folds');
+    var letters = gsap.utils.toArray('.letters .letter');
+
+    var t = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    t.set(mono, { x: cx - mcx, y: cy - mcy, scale: bigScale, transformOrigin: '50% 50%' })
+     .set(brain, { fillOpacity: 0, stroke: '#e72429', strokeWidth: 0.16, attr: { pathLength: 1 }, strokeDasharray: 1, strokeDashoffset: 1 })
+     .set(folds, { opacity: 0 })
+     .set(rays, { scale: 0, transformOrigin: '50% 50%', opacity: 0 })
+     .set(letters, { y: 115 })
+     .set('#reg', { opacity: 0 })
+     .set('#tagline', { opacity: 0, y: 10 })
+     .set('#fast', { opacity: 0, x: -180, skewX: -24 })
+     .set('#speed', { opacity: 0, x: -260, scaleX: 0.15 })
+     .set('#clear', { opacity: 0, y: 14 })
+     .set(['#scroll-btn', '.topbar-inner'], { autoAlpha: 0 })
+     .to(brain, { strokeDashoffset: 0, duration: 1.3, ease: 'power2.inOut' }, 0.2)
+     .to(brain, { fillOpacity: 1, duration: 0.5, ease: 'power1.out' }, 1.25)
+     .to(brain, { strokeWidth: 0, duration: 0.4 }, 1.45)
+     .to(folds, { opacity: 1, duration: 0.4 }, 1.3)
+     .to(rays, { scale: 1, opacity: 1, duration: 0.55, stagger: { each: 0.05, from: 'random' }, ease: 'back.out(2.2)' }, 1.45)
+     .to(mono, { x: 0, y: 0, scale: 1, duration: 1.15, ease: 'power3.inOut' }, 2.3)
+     .to(letters, { y: 0, duration: 0.9, stagger: 0.06 }, 2.75)
+     .to('#reg', { opacity: 1, duration: 0.5 }, 3.4)
+     .fromTo('#tagline', { opacity: 0, y: 10, letterSpacing: '7px' }, { opacity: 1, y: 0, letterSpacing: '0.2px', duration: 1.1 }, 3.3)
+     .to('#speed', { opacity: 1, x: 0, scaleX: 1, duration: 0.1, ease: 'power4.out' }, 3.95)
+     .to('#fast', { opacity: 1, x: 0, skewX: -9, duration: 0.11, ease: 'power4.out' }, 3.96)
+     .to('#fast', { skewX: 0, duration: 0.55, ease: 'elastic.out(1, 0.42)' }, 4.07)
+     .to('#speed', { opacity: 0, x: 40, scaleX: 0.4, duration: 0.3, ease: 'power2.out' }, 4.06)
+     .to('#clear', { opacity: 1, y: 0, duration: 1.5, ease: 'sine.out' }, 4.45)
+     .to(['#scroll-btn', '.topbar-inner'], { autoAlpha: 1, duration: 0.9 }, 5.2);
+    return t;
+  }
+  function run() {
+    if (tl) { tl.kill(); }
+    tl = buildIntro();
+    window.bacomindIntro = tl;
+  }
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(run); } else { run(); }
+  var replayBtn = document.getElementById('replay');
+  if (reduce || !window.gsap) replayBtn.hidden = true;
+  replayBtn.addEventListener('click', function () {
+    if (reduce || !window.gsap) return;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    run();
+  });
+  /* Stay Clear: frosted glass that turns clear on scroll or hover; the loop sleeps once settled */
+  var clearEl = document.getElementById('clear');
+  var hoverClear = false, f = 1, frosting = false, shown = -1;
+  function frost() {
+    var c = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 0.3)));
+    var target = hoverClear ? 0 : 1 - c;
+    f += (target - f) * (reduce ? 1 : 0.07);
+    if (Math.abs(target - f) < 0.001) f = target;
+    var v = Math.round(f * 1000) / 1000;
+    if (v !== shown) { shown = v; clearEl.style.setProperty('--f', v.toFixed(3)); }
+    if (f !== target) requestAnimationFrame(frost); else frosting = false;
+  }
+  function wakeFrost() { if (!frosting) { frosting = true; requestAnimationFrame(frost); } }
+  clearEl.addEventListener('pointerenter', function (e) { if (e.pointerType !== 'touch') { hoverClear = true; wakeFrost(); } });
+  clearEl.addEventListener('pointerleave', function (e) { if (e.pointerType !== 'touch') { hoverClear = false; wakeFrost(); } });
+  clearEl.addEventListener('click', function () { hoverClear = !hoverClear; wakeFrost(); });
+  window.addEventListener('scroll', wakeFrost, { passive: true });
+  wakeFrost();
+
+  /* Scroll button */
+  /* Next button: one screen per tap; wheel and trackpad stay free */
+  var sBtn = document.getElementById('scroll-btn');
+  sBtn.addEventListener('click', function () {
+    window.scrollBy({ top: window.innerHeight, behavior: reduce ? 'auto' : 'smooth' });
+  });
+  function endCheck() {
+    var closeSec = document.getElementById('test');
+    var atEnd = closeSec ? closeSec.getBoundingClientRect().top < window.innerHeight * 0.55 : window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 40;
+    sBtn.classList.toggle('at-end', atEnd);
+  }
+  window.addEventListener('scroll', endCheck, { passive: true });
+  endCheck();
+  /* Arrow keys: down / right = next screen, up / left = previous screen */
+  window.addEventListener('keydown', function (e) {
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.repeat || e.defaultPrevented) return;
+    var t = e.target;
+    /* only when nothing interactive has focus (or the next button itself), so links, buttons and scrollers keep their keys */
+    if (t && t !== document.body && t !== document.documentElement && t !== sBtn) return;
+    var dir = (e.key === 'ArrowDown' || e.key === 'ArrowRight') ? 1 : (e.key === 'ArrowUp' || e.key === 'ArrowLeft') ? -1 : 0;
+    if (!dir) return;
+    e.preventDefault();
+    window.scrollBy({ top: dir * window.innerHeight, behavior: reduce ? 'auto' : 'smooth' });
+  });
+})();
+</script>
+<script>
+/* Leaf film: flower -> capsule closes -> capsule reopens -> spiral into the brain -> brain stays, first chapter arrives */
+(function () {
+  var film = document.getElementById('film');
+  var sticky = document.getElementById('film-sticky');
+  var cv = document.getElementById('film-canvas');
+  if (!film || !cv || !window.bmMakeLeaf) return;
+  var g = cv.getContext('2d');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var SETTINGS = { leaves: 2600, leavesPhone: 1500, size: 1.6, swirl: 1, depth: 1 };
+  var TAU = Math.PI * 2;
+  var sprites = [['#cfd9c2', '#f7f9f0'], ['#9cc66f', '#e6f2c8'], ['#a9bd52', '#ecebaa'], ['#55953f', '#a8d673'], ['#2a6334', '#6dab4b']].map(function (c) { return window.bmMakeLeaf(c[0], c[1]); });
+
+  function sample(w, h, paint) {
+    var c = document.createElement('canvas'); c.width = w; c.height = h;
+    var x2 = c.getContext('2d'); x2.fillStyle = '#fff'; x2.strokeStyle = '#fff';
+    paint(x2);
+    var d = x2.getImageData(0, 0, w, h).data, pts = [];
+    for (var y = 0; y < h; y++) for (var x = 0; x < w; x++) if (d[(y * w + x) * 4 + 3] > 128) pts.push(x, y);
+    return pts;
+  }
+  var petals = sample(400, 420, function (c) {
+    for (var k = 0; k < 5; k++) {
+      var a = -Math.PI / 2 + k * TAU / 5;
+      c.save(); c.translate(200 + Math.cos(a) * 58, 170 + Math.sin(a) * 58); c.rotate(a + Math.PI / 2);
+      c.beginPath(); c.ellipse(0, 0, 30, 52, 0, 0, TAU); c.fill(); c.restore();
+    }
+    c.globalCompositeOperation = 'destination-out'; c.beginPath(); c.arc(200, 170, 22, 0, TAU); c.fill();
+  });
+  var centre = sample(400, 420, function (c) { c.beginPath(); c.arc(200, 170, 20, 0, TAU); c.fill(); });
+  var green = sample(400, 420, function (c) {
+    c.lineWidth = 6; c.beginPath(); c.moveTo(200, 192); c.quadraticCurveTo(188, 300, 206, 410); c.stroke();
+    c.save(); c.translate(158, 300); c.rotate(-0.5); c.beginPath(); c.ellipse(0, 0, 44, 16, 0, 0, TAU); c.fill(); c.restore();
+    c.save(); c.translate(246, 342); c.rotate(0.5); c.beginPath(); c.ellipse(0, 0, 44, 16, 0, 0, TAU); c.fill(); c.restore();
+  });
+  var brainD = document.getElementById('brain').getAttribute('d');
+  var brainPts = sample(620, 380, function (c) { c.translate(310, 190); c.scale(25, 25); c.translate(-393.3, -100.4); c.fill(new Path2D(brainD)); });
+  var panelPts = [];
+  [-140, 0, 140].forEach(function (cx, k) {
+    for (var a = 0; a < 64; a++) { var ang = a / 64 * TAU; panelPts.push(cx + Math.cos(ang) * 46, 30 + Math.sin(ang) * 46); }
+    if (k < 2) for (var s = 0; s < 30; s++) panelPts.push(cx + 46 + s / 30 * 48, 30);
+  });
+
+  var parts = [], motes = [];
+  for (var m = 0; m < 120; m++) motes.push({ x: (Math.random() - 0.5) * 1900, y: -200 + Math.random() * 2500, z: 300 + Math.random() * 700, r: Math.random() * 6.28, c: 3 + Math.floor(Math.random() * 2), s: 2.4 + Math.random() * 2.4 });
+  function pick(arr) { var k = Math.floor(Math.random() * (arr.length / 2)) * 2; return [arr[k], arr[k + 1]]; }
+  function build(n) {
+    var wP = petals.length * 1.25, wC = centre.length * 1.6, wG = green.length * 1.3, tot = wP + wC + wG;
+    parts = [];
+    for (var i = 0; i < n; i++) {
+      var r = Math.random() * tot, reg, pt, order;
+      if (r < wP) {
+        reg = Math.random() < 0.7 ? 0 : 1; pt = pick(petals);
+        var pa = Math.atan2(pt[1] - 170, pt[0] - 200) + Math.PI / 2;
+        var pk = ((Math.round(pa / (TAU / 5)) % 5) + 5) % 5;
+        order = 0.3 + pk * 0.11 + Math.random() * 0.08;
+      } else if (r < wP + wC) {
+        reg = 2; pt = pick(centre); order = 0.86 + Math.random() * 0.1;
+      } else {
+        reg = Math.random() < 0.6 ? 3 : 4; pt = pick(green);
+        order = 0.28 * Math.max(0, Math.min(1, 1 - (pt[1] - 190) / 225)) + Math.random() * 0.04;
+      }
+      var cx, cy;
+      do { cx = -38 + Math.random() * 76; cy = 1082 + Math.random() * 114; } while (cy > 1158 && (cx * cx + (cy - 1158) * (cy - 1158)) > 37 * 37);
+      var b = pick(brainPts), pl = pick(panelPts);
+      parts.push({
+        fx: pt[0] - 200, fy: pt[1] - 170 + 360, fz: Math.random() - 0.5, order: order,
+        sx: (Math.random() - 0.5) * 1500, sy: 120 - Math.random() * 900, sz: (Math.random() - 0.5) * 600,
+        cx: cx, cy: cy, cz: Math.random() - 0.5,
+        bx: b[0] - 310 + (Math.random() - 0.5) * 1.2, by: b[1] - 190 + (Math.random() - 0.5) * 1.2, bz: Math.random() - 0.5,
+        px: pl[0] + (Math.random() - 0.5) * 3, py: pl[1] + (Math.random() - 0.5) * 3, goPanel: Math.random() < 0.16,
+        d: Math.random(), th: Math.random() * TAU, rr: Math.random(), col: reg,
+        rot: Math.random() * TAU, spin: (Math.random() < 0.5 ? -1 : 1) * (0.3 + Math.random() * 0.7), tum: Math.random() * TAU, sz: 0.75 + Math.random() * 0.5
+      });
+    }
+  }
+
+  var W = 0, H = 0, S = 1, narrow = false, count = 0;
+  function resize() {
+    W = sticky.clientWidth; H = sticky.clientHeight;
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    narrow = W < 900;
+    S = narrow ? Math.min(W / 520, H / 900) : Math.min(W / 960, H / 760);
+    var want = narrow ? SETTINGS.leavesPhone : SETTINGS.leaves;
+    if (want !== count) { count = want; build(count); }
+  }
+  resize();
+  var rsT = null;
+  window.addEventListener('resize', function () { clearTimeout(rsT); rsT = setTimeout(resize, 150); });
+
+  var mx = 0, my = 0, tmx = 0, tmy = 0, hover = false, t = 0, p = 0, pre = 0, lastNow = 0;
+  sticky.addEventListener('pointermove', function (e) {
+    if (e.pointerType === 'touch' || reduce) return;
+    var r = sticky.getBoundingClientRect(); hover = true;
+    tmx = ((e.clientX - r.left) / r.width - 0.5) * 2; tmy = ((e.clientY - r.top) / r.height - 0.5) * 2;
+  });
+  sticky.addEventListener('pointerleave', function () { hover = false; });
+  function targetP() {
+    var r = film.getBoundingClientRect();
+    var total = film.offsetHeight - sticky.clientHeight;
+    return total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 0;
+  }
+
+  var panel = document.getElementById('ms-panel');
+  var ftBox = document.getElementById('film-text'), ftLabel = document.getElementById('ft-label'), ftBig = document.getElementById('ft-big'), ftSmall = document.getElementById('ft-small');
+  var bar = document.getElementById('film-bar');
+  var caps = [
+    { label: 'The plant', big: 'Traceable', small: '& sustainable' },
+    { label: 'The capsule', big: '9 bioactives', small: 'Each tested by HPLC (USP). Consistent standardization.' },
+    { label: 'The mind', big: '3 pathways', small: 'Neurotransmission, neuroprotection and the structure of neurons.' }
+  ];
+  var stage = 0, swapAt = -1;
+  function setStage(i) {
+    if (i !== stage) {
+      stage = i;
+      ftBox.classList.add('swap');
+      swapAt = performance.now();
+    }
+    if (swapAt >= 0 && performance.now() - swapAt > 380) {
+      swapAt = -1;
+      if (stage < 3) {
+        ftLabel.textContent = caps[stage].label; ftBig.textContent = caps[stage].big; ftSmall.textContent = caps[stage].small;
+        ftBox.classList.remove('swap');
+      }
+    }
+  }
+
+  var cl = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+  var sm = function (v) { v = cl(v); return v * v * (3 - 2 * v); };
+  var out = { x: 0, y: 0, s: 1, z: 0 };
+
+  function draw() {
+    var dep = SETTINGS.depth, sw = SETTINGS.swirl, F = 900;
+    var ph = function (a, b) { return cl((p - a) / (b - a)); };
+    g.setTransform(DPR, 0, 0, DPR, 0, 0);
+    g.globalAlpha = 1;
+    g.clearRect(0, 0, W, H);
+    var camC = 360 + 720 * sm(ph(0.04, 0.24)) + 720 * sm(ph(0.48, 0.74));
+    var yaw = mx * 0.45 * dep, pitch = 0.06 + my * 0.22 * dep;
+    var cyw = Math.cos(yaw), syw = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    var endShift = sm(ph(0.82, 0.92));
+    var cxF = narrow ? 0.5 : 0.64 - 0.02 * endShift, cyF = narrow ? 0.62 - 0.1 * endShift : 0.5;
+    function proj(x, y, z) {
+      var yy = y - camC, x1 = x * cyw + z * syw, z1 = -x * syw + z * cyw;
+      var y2 = yy * cp - z1 * sp, z2 = yy * sp + z1 * cp, s = F / (F + z2);
+      out.x = W * cxF + x1 * s * S; out.y = H * cyF + y2 * s * S; out.s = s * S; out.z = z2;
+      return out;
+    }
+    function leaf(sprite, x, y, len, rot, tumble, alpha) {
+      var k = len / 44, c = Math.cos(rot) * k, s = Math.sin(rot) * k, ty = 0.3 + 0.7 * Math.abs(Math.cos(tumble));
+      g.globalAlpha = alpha;
+      g.setTransform(DPR * c, DPR * s, -DPR * s * ty, DPR * c * ty, DPR * x, DPR * y);
+      g.drawImage(sprite, -24, -12);
+    }
+    for (var mI = 0; mI < motes.length; mI++) {
+      var mo = motes[mI], o0 = proj(mo.x, mo.y, mo.z * (0.5 + dep * 0.5));
+      if (o0.y < -30 || o0.y > H + 30) continue;
+      var mt = reduce ? 0 : t;
+      leaf(sprites[mo.c], o0.x, o0.y, mo.s * 3 * o0.s, mo.r + mt * 0.1, mo.r + mt * 0.3, 0.16 * Math.min(1, o0.s));
+    }
+    g.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+    var shiftB = sm(ph(0.82, 0.92));
+    var bOffX = narrow ? 0 : 250 * shiftB, bOffY = narrow ? -205 * shiftB : 0;
+    var bScale = narrow ? 0.76 - 0.12 * shiftB : 1 - 0.28 * shiftB;
+    var pcx = narrow ? 0 : -260, pcy = narrow ? 1800 + 190 : 1800;
+    var pScale = narrow ? Math.max(1, Math.min(1.35, (W - 32) / (420 * S))) : 1;
+    var capA = sm(ph(0.02, 0.1)) * (1 - sm(ph(0.5, 0.6)));
+    var capOpen = 1 - sm(ph(0.28, 0.36));
+    var reopen = sm(ph(0.42, 0.52));
+    var bdx = 80 * reopen, bdy = 60 * reopen, brot = 0.4 * reopen, cdx, cdy, crot;
+    if (reopen > 0) { cdx = -170 * reopen; cdy = -130 * reopen; crot = -0.8 * reopen; }
+    else { cdx = 40 * capOpen; cdy = -130 * capOpen; crot = -0.55 * capOpen; }
+
+    if (capA > 0.01) {
+      var ob = proj(bdx, 1135 + bdy, 0);
+      g.save(); g.globalAlpha = capA; g.translate(ob.x, ob.y); g.scale(ob.s, ob.s); g.rotate(brot);
+      g.beginPath(); g.moveTo(-42, -65); g.lineTo(42, -65); g.lineTo(42, 23); g.arc(0, 23, 42, 0, Math.PI); g.closePath();
+      var bf = g.createLinearGradient(-42, 0, 42, 0);
+      bf.addColorStop(0, 'rgba(225,240,215,0.13)'); bf.addColorStop(1, 'rgba(225,240,215,0.04)');
+      g.fillStyle = bf; g.fill(); g.lineWidth = 1.5; g.strokeStyle = 'rgba(215,232,200,0.45)'; g.stroke();
+      g.restore();
+    }
+
+    var SP = 0.7;
+    function stag(a, b, d) { var v = (p - a) / (b - a); v = cl(v * (1 + SP) - d * SP); return v * v * (3 - 2 * v); }
+    var base = SETTINGS.size * 3.4;
+    for (var i = 0; i < parts.length; i++) {
+      var q = parts[i], x, y, z, travel = 0;
+      var eE = stag(0.48, 0.76, q.d), eB = stag(0.05, 0.26, q.d), ePn = q.goPanel ? stag(0.88, 1.0, q.d) : 0;
+      var hx = q.cx + bdx, hy = q.cy + bdy, hz = q.cz * 50 * dep;
+      var tbx = q.bx * bScale + bOffX, tby = q.by * bScale + 1800 + bOffY, tbz = q.bz * 90 * dep;
+      var amp, ang;
+      if (ePn > 0) {
+        amp = Math.sin(Math.PI * ePn) * 90 * sw * (0.5 + 0.5 * q.rr); ang = q.th + ePn * 1.5 * TAU;
+        var pxw = pcx + q.px * pScale, pyw = pcy + q.py * pScale;
+        x = tbx + (pxw - tbx) * ePn + Math.cos(ang) * amp;
+        y = tby + (pyw - tby) * ePn + Math.sin(ang * 0.5) * amp * 0.2;
+        z = tbz + (40 - tbz) * ePn + Math.sin(ang) * amp * dep;
+        travel = ePn < 1 ? 1 : 0;
+      } else if (eE > 0) {
+        amp = Math.sin(Math.PI * eE) * 210 * sw * (0.5 + 0.5 * q.rr); ang = q.th + eE * 2.6 * TAU;
+        x = hx + (tbx - hx) * eE + Math.cos(ang) * amp;
+        y = hy + (tby - hy) * eE + Math.sin(ang * 0.5) * amp * 0.12;
+        z = hz + (tbz - hz) * eE + Math.sin(ang) * amp * dep;
+        travel = eE < 1 ? 1 : 0;
+      } else if (eB > 0) {
+        var fz = q.fz * 60 * dep;
+        amp = Math.sin(Math.PI * eB) * 120 * sw * (0.5 + 0.5 * q.rr); ang = q.th + eB * 1.7 * TAU;
+        x = q.fx + (hx - q.fx) * eB + Math.cos(ang) * amp;
+        y = q.fy + (hy - q.fy) * eB + Math.sin(ang * 0.5) * amp * 0.12;
+        z = fz + (hz - fz) * eB + Math.sin(ang) * amp * dep;
+        travel = eB < 1 ? 1 : 0;
+      } else {
+        var eG = cl((pre * 1.3 - q.order) / 0.3); eG = eG * eG * (3 - 2 * eG);
+        var fxx = q.fx + (reduce ? 0 : Math.sin(t * 1.1 + q.fy * 0.02) * 2.2), fzz = q.fz * 60 * dep;
+        if (eG < 1) {
+          var wx = q.sx + (reduce ? 0 : Math.sin(t * 0.3 + i) * 14), wy = q.sy + (reduce ? 0 : Math.cos(t * 0.25 + i) * 10);
+          amp = Math.sin(Math.PI * eG) * 90 * sw * (0.5 + 0.5 * q.rr); ang = q.th + eG * 1.3 * TAU;
+          x = wx + (fxx - wx) * eG + Math.cos(ang) * amp;
+          y = wy + (q.fy - wy) * eG + Math.sin(ang * 0.5) * amp * 0.15;
+          z = q.sz + (fzz - q.sz) * eG + Math.sin(ang) * amp * dep;
+          travel = 1;
+        } else { x = fxx; y = q.fy; z = fzz; }
+      }
+      if (!travel && !reduce) { x += Math.sin(t * 0.9 + i) * 0.6; y += Math.cos(t * 0.7 + i * 1.3) * 0.6; }
+      var o = proj(x, y, z);
+      if (o.y < -20 || o.y > H + 20 || o.s <= 0) continue;
+      var depthA = o.z > 0 ? cl(1 - o.z / 1000) : 1;
+      var drift = reduce ? 0 : 1;
+      var rot = q.rot + (travel ? p * 40 * q.spin + drift * t * 0.4 * q.spin : drift * Math.sin(t * 0.8 + i) * 0.25);
+      var tum = q.tum + (travel ? p * 50 * q.spin + drift * t * 0.9 : drift * t * 0.6);
+      leaf(sprites[q.col], o.x, o.y, base * q.sz * o.s, rot, tum, 0.55 + 0.45 * depthA);
+    }
+    g.setTransform(DPR, 0, 0, DPR, 0, 0);
+    g.globalAlpha = 1;
+
+    if (capA > 0.01) {
+      var oc = proj(cdx, 1090 + cdy, 0);
+      g.save(); g.globalAlpha = capA; g.translate(oc.x, oc.y); g.scale(oc.s, oc.s); g.rotate(crot);
+      g.beginPath(); g.moveTo(-44, 0); g.lineTo(-44, -78); g.arc(0, -78, 44, Math.PI, 0); g.lineTo(44, 0); g.closePath();
+      var cf = g.createLinearGradient(-44, 0, 44, 0);
+      cf.addColorStop(0, 'rgba(60, 160, 95, 0.22)'); cf.addColorStop(0.45, 'rgba(120, 200, 140, 0.14)'); cf.addColorStop(1, 'rgba(30, 120, 70, 0.20)');
+      g.fillStyle = cf; g.fill();
+      g.lineWidth = 1.5; g.strokeStyle = 'rgba(190, 228, 196, 0.6)'; g.stroke();
+      g.restore();
+    }
+    var click = ph(0.35, 0.4);
+    if (click > 0 && click < 1) {
+      var oo = proj(0, 1100, 0);
+      g.globalAlpha = (1 - click) * 0.3; g.lineWidth = 1.5; g.strokeStyle = '#cfe3bf';
+      g.beginPath(); g.arc(oo.x, oo.y, (70 + 200 * click) * oo.s, 0, TAU); g.stroke();
+      g.globalAlpha = 1;
+    }
+
+    var pa = sm(ph(0.86, 0.94));
+    if (pa > 0.001) {
+      var op = proj(pcx, pcy, 40), k = op.s * pScale;
+      panel.style.transform = 'translate(' + (op.x - 200 * k).toFixed(1) + 'px,' + (op.y - 135 * k).toFixed(1) + 'px) scale(' + k.toFixed(4) + ')';
+    }
+    panel.style.opacity = pa.toFixed(3);
+  }
+
+  function ui() {
+    bar.style.transform = 'scaleY(' + p.toFixed(3) + ')';
+    setStage(p < 0.12 ? 0 : p < 0.42 ? 1 : p < 0.84 ? 2 : 3);
+  }
+
+  function frame(now) {
+    requestAnimationFrame(frame);
+    var r = film.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > window.innerHeight) { lastNow = now; return; }
+    pre = cl(1 - r.top / window.innerHeight);
+    cv.style.setProperty('--fade', ((1 - pre) * 40).toFixed(1) + '%');
+    t += Math.min(0.05, Math.max(0, (now - (lastNow || now)) / 1000)); lastNow = now;
+    var pt = targetP();
+    p += reduce ? (pt - p) : (pt - p) * 0.12;
+    if (Math.abs(pt - p) < 0.0005) p = pt;
+    if (!hover) { tmx = reduce ? 0 : Math.sin(t * 0.25) * 0.3; tmy = reduce ? 0 : Math.sin(t * 0.17) * 0.2; }
+    mx += (tmx - mx) * 0.05; my += (tmy - my) * 0.05;
+    draw();
+    ui();
+  }
+  requestAnimationFrame(frame);
+  window.bacomindFilm = { jump: function (v) { p = v; }, state: function () { return { p: p, stage: stage, swapAt: swapAt, t: t }; } };
+})();
+</script>
+<script>
+/* Evidence chapters: charts drawn from the brochure's figures, revealed on arrival */
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var NS = 'http://www.w3.org/2000/svg';
+  function mk(tag, attrs, parent, text) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function svgFor(box, W, H, aria) {
+    box.innerHTML = '';
+    return mk('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': aria }, box);
+  }
+  function fmtK(v) { return v.toLocaleString('en-GB'); }
+
+  /* Line chart: BacoMind vs placebo, week by week */
+  function lineChart(box, c) {
+    var W = Math.max(300, Math.round(box.clientWidth)), H = W < 460 ? 300 : 340;
+    var padL = 50, padR = W < 460 ? 22 : 34, padT = 26, padB = 36;
+    var svg = svgFor(box, W, H, c.aria);
+    var n = c.b.length;
+    var X = function (i) { return padL + i * (W - padL - padR) / (n - 1); };
+    var Y = function (v) { return padT + (c.max - v) / (c.max - c.min) * (H - padT - padB); };
+    c.ticks.forEach(function (v) {
+      mk('line', { x1: padL, x2: W - padR, y1: Y(v), y2: Y(v), class: 'ax' }, svg);
+      mk('text', { x: padL - 10, y: Y(v) + 4, 'text-anchor': 'end', class: 'tick' }, svg, c.fmt ? c.fmt(v) : v);
+    });
+    for (var i = 0; i < n; i++) mk('text', { x: X(i), y: H - 10, 'text-anchor': 'middle', class: 'tick' }, svg, c.xl(i));
+    function pts(arr, from, to) { var s = []; for (var k = from; k <= to; k++) s.push(X(k).toFixed(1) + ',' + Y(arr[k]).toFixed(1)); return s; }
+    if (c.gapFrom != null) {
+      var top = pts(c.p, c.gapFrom, n - 1), bot = pts(c.b, c.gapFrom, n - 1).reverse();
+      mk('polygon', { points: top.concat(bot).join(' '), class: 'gap-fill fade' }, svg);
+    }
+    mk('path', { d: 'M' + pts(c.p, 0, n - 1).join(' L'), class: 'l-p fade' }, svg);
+    mk('path', { d: 'M' + pts(c.b, 0, n - 1).join(' L'), class: 'l-b draw', pathLength: 1 }, svg);
+    for (var j = 0; j < n; j++) {
+      mk('circle', { cx: X(j), cy: Y(c.p[j]), r: 4, class: 'dot-p fade' }, svg);
+      mk('circle', { cx: X(j), cy: Y(c.b[j]), r: 5, class: 'dot-b fade2' }, svg);
+    }
+    (c.labels || []).forEach(function (l) {
+      var v = (l.on === 'p' ? c.p : c.b)[l.i];
+      var last = l.i === n - 1, first = l.i === 0;
+      var lt = mk('text', { x: X(l.i) + (last ? 6 : first ? -4 : 0), y: Y(v) + (l.below ? 28 : -16), 'text-anchor': last ? 'end' : first ? 'start' : 'middle', class: (l.on === 'p' ? 'lab-p' : 'lab-b') + ' fade2' }, svg, l.text);
+      try {
+        var bb = lt.getBBox();
+        if (bb.width) svg.insertBefore(mk('rect', { x: bb.x - 5, y: bb.y - 2, width: bb.width + 10, height: bb.height + 4, rx: 6, class: 'lab-bg fade2' }), lt);
+      } catch (err) {}
+    });
+    /* hover / tap: guide line and the brochure's own labels for that week */
+    var guide = mk('line', { y1: padT, y2: H - padB, class: 'guide', visibility: 'hidden' }, svg);
+    var tip = mk('g', { class: 'tip', visibility: 'hidden' }, svg);
+    var tipBg = mk('rect', { rx: 10, ry: 10 }, tip);
+    var tl = [mk('text', { class: 't1' }, tip), mk('text', {}, tip), mk('text', {}, tip)];
+    var hit = mk('rect', { x: padL - 10, y: 0, width: W - padL - padR + 20, height: H - padB, fill: 'transparent' }, svg);
+    function show(evt) {
+      var r = svg.getBoundingClientRect();
+      var sx = (evt.clientX - r.left) * W / r.width;
+      var k = Math.max(0, Math.min(n - 1, Math.round((sx - padL) / ((W - padL - padR) / (n - 1)))));
+      var lines = [c.xl(k, true)].concat((c.hover && c.hover[k]) || []);
+      guide.setAttribute('x1', X(k)); guide.setAttribute('x2', X(k)); guide.setAttribute('visibility', 'visible');
+      var tw = 0;
+      tl.forEach(function (t, q) { t.textContent = lines[q] || ''; t.setAttribute('x', 12); t.setAttribute('y', 22 + q * 18); tw = Math.max(tw, (lines[q] || '').length * 7); });
+      var bw = tw + 24, bh = 14 + lines.length * 18;
+      tipBg.setAttribute('width', bw); tipBg.setAttribute('height', bh);
+      var tx = X(k) + 12; if (tx + bw > W) tx = X(k) - 12 - bw;
+      tip.setAttribute('transform', 'translate(' + tx.toFixed(1) + ',' + (padT + 4) + ')');
+      tip.setAttribute('visibility', 'visible');
+    }
+    function hide() { guide.setAttribute('visibility', 'hidden'); tip.setAttribute('visibility', 'hidden'); }
+    hit.addEventListener('pointermove', show);
+    hit.addEventListener('pointerdown', show);
+    hit.addEventListener('pointerleave', hide);
+  }
+
+  /* Rows of horizontal marks: the forest plot and the memory bars */
+  function rowsLayout(W, nRows) {
+    var narrow = W < 560;
+    return { narrow: narrow, labelW: narrow ? 0 : 168, valW: narrow ? 0 : 128, rowH: narrow ? 96 : 84, top: 6 };
+  }
+  function forest(box) {
+    var rows = [
+      { name: 'Fatigue', est: 7.16, lo: 2.84, hi: 11.47, txt: '↓7.16 · p = .001', strong: true },
+      { name: 'Cognitive Abilities', est: 3.6, lo: -0.2, hi: 7.4, txt: '↑3.60 · p = .061' },
+      { name: 'Cognitive Function', est: 2.44, lo: -1.1, hi: 5.9, txt: '↑2.44 · p = .173' }
+    ];
+    var W = Math.max(300, Math.round(box.clientWidth)), L = rowsLayout(W, rows.length);
+    var H = L.top + rows.length * L.rowH + 52;
+    var svg = svgFor(box, W, H, 'Difference vs placebo with 95% confidence intervals: fatigue down 7.16, p = .001; cognitive abilities up 3.60, p = .061; cognitive function up 2.44, p = .173');
+    var x0 = L.labelW + 14, x1 = W - L.valW - 14;
+    var X = function (v) { return x0 + (v + 4) / 16 * (x1 - x0); };
+    rows.forEach(function (r, i) {
+      var y = L.top + i * L.rowH;
+      mk('rect', { x: 0, y: y, width: W, height: L.rowH - 10, rx: 16, class: 'row-bg' }, svg);
+      var cy = L.narrow ? y + 58 : y + (L.rowH - 10) / 2;
+      if (L.narrow) {
+        mk('text', { x: 14, y: y + 26, class: 'row-name' }, svg, r.name);
+        mk('text', { x: W - 14, y: y + 26, 'text-anchor': 'end', class: 'row-val' + (r.strong ? '' : ' soft') }, svg, r.txt);
+      } else {
+        mk('text', { x: 16, y: cy + 5, class: 'row-name' }, svg, r.name);
+        mk('text', { x: W - 14, y: cy + 5, 'text-anchor': 'end', class: 'row-val' + (r.strong ? '' : ' soft') }, svg, r.txt);
+      }
+      var cls = 'whisk' + (r.strong ? ' strong' : '');
+      mk('line', { x1: X(r.lo), x2: X(r.est), y1: cy, y2: cy, class: cls + ' grow-l' }, svg);
+      mk('line', { x1: X(r.est), x2: X(r.hi), y1: cy, y2: cy, class: cls + ' grow' }, svg);
+      mk('line', { x1: X(r.lo), x2: X(r.lo), y1: cy - 9, y2: cy + 9, class: cls + ' fade2' }, svg);
+      mk('line', { x1: X(r.hi), x2: X(r.hi), y1: cy - 9, y2: cy + 9, class: cls + ' fade2' }, svg);
+      mk('circle', { cx: X(r.est), cy: cy, r: r.strong ? 10 : 8, class: 'w-dot' + (r.strong ? ' strong' : '') + ' fade' }, svg);
+    });
+    var bottom = L.top + rows.length * L.rowH - 6;
+    if (L.narrow) {
+      rows.forEach(function (r, i) { var y = L.top + i * L.rowH; mk('line', { x1: X(0), x2: X(0), y1: y + 38, y2: y + L.rowH - 14, class: 'ax-zero' }, svg); });
+    } else {
+      mk('line', { x1: X(0), x2: X(0), y1: L.top, y2: bottom, class: 'ax-zero' }, svg);
+    }
+    [-4, 0, 4, 8, 12].forEach(function (v) {
+      mk('text', { x: X(v), y: bottom + 20, 'text-anchor': 'middle', class: 'tick' }, svg, v > 0 ? '+' + v : String(v));
+    });
+    mk('text', { x: X(0) + 8, y: bottom + 42, class: 'tick' }, svg, 'Favours BacoMind® ▶');
+  }
+  function memoryBars(box) {
+    var rows = [
+      { name: 'Immediate recall', b: 24, p: -7, bt: '↑24%', pt: '↓7%' },
+      { name: 'Delayed recall', b: 22, p: -13, bt: '↑22%', pt: '↓13%' },
+      { name: 'Memory disturbance', b: 50, p: 0, bt: '↓50%', pt: '0% placebo' },
+      { name: 'Learning', b: 7, p: -4, bt: '↑7%', pt: '↓4%' }
+    ];
+    var W = Math.max(300, Math.round(box.clientWidth)), narrow = W < 560;
+    var labelW = narrow ? 0 : 168, rowH = narrow ? 92 : 78, top = 6;
+    var H = top + rows.length * rowH + 30;
+    var svg = svgFor(box, W, H, 'Improvement at 12 weeks, BacoMind versus placebo: immediate recall up 24% vs down 7%; delayed recall up 22% vs down 13%; memory disturbance down 50% vs 0%; learning up 7% vs down 4%');
+    var x0 = labelW + 14, x1 = W - 70;
+    var X = function (v) { return x0 + (v + 20) / 80 * (x1 - x0); };
+    rows.forEach(function (r, i) {
+      var y = top + i * rowH;
+      mk('rect', { x: 0, y: y, width: W, height: rowH - 10, rx: 16, class: 'row-bg' }, svg);
+      var by = narrow ? y + 38 : y + 16;
+      mk('text', narrow ? { x: 14, y: y + 24, class: 'row-name' } : { x: 16, y: y + (rowH - 10) / 2 + 5, class: 'row-name' }, svg, r.name);
+      mk('rect', { x: X(0), y: by, width: Math.max(0, X(r.b) - X(0)), height: 16, rx: 3, class: 'bar-b grow' }, svg);
+      mk('text', { x: X(r.b) + 8, y: by + 13, class: 'lab-b fade2' }, svg, r.bt);
+      if (r.p < 0) {
+        mk('rect', { x: X(r.p), y: by + 21, width: X(0) - X(r.p), height: 11, rx: 3, class: 'bar-p grow-l' }, svg);
+        if (narrow) mk('text', { x: X(0) + 8, y: by + 31, class: 'lab-p fade2' }, svg, r.pt + ' placebo');
+        else mk('text', { x: X(r.p) - 6, y: by + 31, 'text-anchor': 'end', class: 'lab-p fade2' }, svg, r.pt);
+      } else {
+        mk('text', { x: X(0) + 8, y: by + 33, class: 'lab-p fade2' }, svg, r.pt);
+      }
+    });
+    var bottom = top + rows.length * rowH - 6;
+    if (narrow) {
+      rows.forEach(function (r, i) { var by = top + i * rowH + 38; mk('line', { x1: X(0), x2: X(0), y1: by - 6, y2: by + 38, class: 'ax-zero' }, svg); });
+    } else {
+      mk('line', { x1: X(0), x2: X(0), y1: top, y2: bottom, class: 'ax-zero' }, svg);
+    }
+    [-20, 0, 20, 40, 60].forEach(function (v) {
+      mk('text', { x: X(v), y: bottom + 20, 'text-anchor': 'middle', class: 'tick' }, svg, (v > 0 ? '+' : '') + v + '%');
+    });
+  }
+  function avlt(box) {
+    var W = Math.max(300, Math.round(box.clientWidth)), H = 300, narrow = W < 460;
+    var svg = svgFor(box, W, H, 'AVLT total learning: BacoMind 41.4 to 44.3, up 2.9; placebo 41.2 to 39.4, down 1.8; difference 4.7');
+    var padL = 46, padT = 24, padB = 40;
+    var xa = padL + 40, xb = W - (narrow ? 120 : 150);
+    var Y = function (v) { return padT + (46 - v) / 8 * (H - padT - padB); };
+    [38, 40, 42, 44, 46].forEach(function (v) {
+      mk('line', { x1: padL, x2: xb + 20, y1: Y(v), y2: Y(v), class: 'ax' }, svg);
+      mk('text', { x: padL - 10, y: Y(v) + 4, 'text-anchor': 'end', class: 'tick' }, svg, v);
+    });
+    mk('text', { x: xa, y: H - 10, 'text-anchor': 'middle', class: 'tick' }, svg, 'Baseline');
+    mk('text', { x: xb, y: H - 10, 'text-anchor': 'middle', class: 'tick' }, svg, '12 weeks');
+    mk('path', { d: 'M' + xa + ',' + Y(41.2) + ' L' + xb + ',' + Y(39.4), class: 'l-p fade' }, svg);
+    mk('path', { d: 'M' + xa + ',' + Y(41.4) + ' L' + xb + ',' + Y(44.3), class: 'l-b draw', pathLength: 1 }, svg);
+    mk('circle', { cx: xa, cy: Y(41.2), r: 4, class: 'dot-p fade' }, svg);
+    mk('circle', { cx: xb, cy: Y(39.4), r: 4, class: 'dot-p fade' }, svg);
+    mk('circle', { cx: xa, cy: Y(41.4), r: 5, class: 'dot-b fade2' }, svg);
+    mk('circle', { cx: xb, cy: Y(44.3), r: 5, class: 'dot-b fade2' }, svg);
+    mk('text', { x: xa, y: Y(41.4) - 14, 'text-anchor': 'middle', class: 'lab-b fade2' }, svg, '41.4');
+    mk('text', { x: xa, y: Y(41.2) + 24, 'text-anchor': 'middle', class: 'lab-p fade' }, svg, '41.2');
+    mk('text', { x: xb, y: Y(44.3) - 14, 'text-anchor': 'middle', class: 'lab-b fade2' }, svg, '44.3');
+    mk('text', { x: xb, y: Y(39.4) + 24, 'text-anchor': 'middle', class: 'lab-p fade' }, svg, '39.4');
+    mk('rect', { x: xb + 14, y: Y(44.3) - 12, width: 46, height: 24, rx: 12, class: 'pill-bg fade2' }, svg);
+    mk('text', { x: xb + 37, y: Y(44.3) + 5, 'text-anchor': 'middle', class: 'lab-b fade2' }, svg, '+2.9');
+    mk('rect', { x: xb + 14, y: Y(39.4) - 12, width: 46, height: 24, rx: 12, class: 'pill-bg pl fade' }, svg);
+    mk('text', { x: xb + 37, y: Y(39.4) + 5, 'text-anchor': 'middle', class: 'lab-p fade' }, svg, '−1.8');
+    var bx = xb + 74;
+    mk('path', { d: 'M' + (bx - 6) + ',' + Y(44.3) + ' H' + bx + ' V' + Y(39.4) + ' H' + (bx - 6), fill: 'none', stroke: 'var(--sprout)', 'stroke-width': 1.5, class: 'fade2' }, svg);
+    mk('text', { x: bx + 8, y: (Y(44.3) + Y(39.4)) / 2 + 5, class: 'lab-b fade2' }, svg, '+4.7');
+  }
+
+  var charts = {
+    reaction: function (box) {
+      lineChart(box, {
+        aria: 'Reaction time by arm over 8 weeks, lower is faster. Week 6: BacoMind 1,517 ms, placebo 1,855 ms. Week 8: BacoMind 1,525 ms, placebo 1,667 ms.',
+        min: 1400, max: 2200, ticks: [1400, 1600, 1800, 2000, 2200], fmt: fmtK,
+        b: [2150, 1875, 1715, 1655, 1565, 1517, 1450, 1525],
+        p: [1920, 2020, 1865, 1720, 1845, 1855, 1630, 1667],
+        gapFrom: 1,
+        xl: function (i, long) { return (long ? 'Week ' : 'Wk ') + (i + 1); },
+        labels: [{ i: 5, on: 'p', text: '1,855' }, { i: 5, on: 'b', text: '1,517', below: true }, { i: 7, on: 'p', text: '1,667' }, { i: 7, on: 'b', text: '1,525', below: true }],
+        hover: { 5: ['BacoMind® 1,517 ms', 'Placebo 1,855 ms'], 7: ['BacoMind® 1,525 ms', 'Placebo 1,667 ms'] }
+      });
+    },
+    'clarity-cog': function (box) {
+      lineChart(box, {
+        aria: 'Cognitive function by week, higher is better. BacoMind ahead of placebo in all 8 weeks; difference up 7.9 at week 1, up 12.1 at week 5, up 5.5 at week 8.',
+        min: 10, max: 40, ticks: [10, 20, 30, 40],
+        b: [27.5, 29.7, 29.6, 29.5, 28.4, 31.5, 29.2, 31.3],
+        p: [19.6, 22.6, 24.7, 26.6, 16.3, 23.2, 27.1, 25.9],
+        xl: function (i, long) { return (long ? 'Week ' : '') + (i + 1); },
+        labels: [{ i: 0, text: '↑7.9†' }, { i: 4, text: '↑12.1†' }, { i: 7, text: '↑5.5' }],
+        hover: { 0: ['BacoMind® minus placebo ↑7.9†'], 4: ['BacoMind® minus placebo ↑12.1†'], 7: ['BacoMind® minus placebo ↑5.5'] }
+      });
+    },
+    'clarity-fat': function (box) {
+      lineChart(box, {
+        aria: 'Fatigue by week, lower is better. Difference down 14.1 at week 5 and down 9.8 at week 8; down 40% within arm from week 1 to 8.',
+        min: 10, max: 40, ticks: [10, 20, 30, 40],
+        b: [21.5, 20, 18, 21, 18.8, 16, 16, 13],
+        p: [27, 22.5, 20, 18, 33, 24.5, 17.3, 22.5],
+        xl: function (i, long) { return (long ? 'Week ' : '') + (i + 1); },
+        labels: [{ i: 4, text: '↓14.1†', below: true }, { i: 7, text: '↓9.8', below: true }],
+        hover: { 4: ['BacoMind® minus placebo ↓14.1†'], 7: ['BacoMind® minus placebo ↓9.8'] }
+      });
+    },
+    forest: forest,
+    memory: memoryBars,
+    avlt: avlt
+  };
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('[data-chart]'));
+  function buildAll() {
+    boxes.forEach(function (b) { if (!b.hidden && charts[b.dataset.chart]) charts[b.dataset.chart](b); });
+  }
+  buildAll();
+  var rt = null, lastW = window.innerWidth;
+  window.addEventListener('resize', function () {
+    if (Math.abs(window.innerWidth - lastW) < 2) return;
+    lastW = window.innerWidth;
+    clearTimeout(rt); rt = setTimeout(buildAll, 160);
+  });
+
+  /* Count-ups */
+  function countUp(el) {
+    var to = parseFloat(el.dataset.to), dec = parseInt(el.dataset.dec || '0', 10), t0 = performance.now(), dur = 1300;
+    function step(now) {
+      var k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = (to * e).toFixed(dec);
+      if (k < 1) requestAnimationFrame(step); else el.textContent = to.toFixed(dec);
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* Reveal on arrival: only things still below the fold start hidden */
+  var anims = Array.prototype.slice.call(document.querySelectorAll('.anim'));
+  var counts = Array.prototype.slice.call(document.querySelectorAll('.count'));
+  if (reduce || !('IntersectionObserver' in window)) {
+    anims.forEach(function (a) { a.classList.add('in'); });
+  } else {
+    var vh = window.innerHeight;
+    anims.forEach(function (a) { if (a.getBoundingClientRect().top > vh * 0.9) a.classList.add('pre'); else a.classList.add('in'); });
+    counts.forEach(function (c) {
+      if (c.getBoundingClientRect().top <= vh * 0.9) return;
+      /* screen readers and find-in-page keep the real figure; only the visible copy counts up */
+      if (c.namespaceURI !== NS) {
+        var sr = document.createElement('span'); sr.className = 'sr-only'; sr.textContent = c.textContent;
+        c.parentNode.insertBefore(sr, c); c.setAttribute('aria-hidden', 'true');
+      }
+      c.dataset.wait = '1'; c.textContent = (0).toFixed(parseInt(c.dataset.dec || '0', 10));
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        if (el.classList.contains('anim')) {
+          el.getBoundingClientRect();
+          el.classList.remove('pre'); el.classList.add('in');
+        } else if (el.dataset.wait) {
+          delete el.dataset.wait; countUp(el);
+        }
+        io.unobserve(el);
+      });
+    }, { threshold: 0.25, rootMargin: '0px 0px -8% 0px' });
+    anims.forEach(function (a) { if (a.classList.contains('pre')) io.observe(a); });
+    counts.forEach(function (c) { if (c.dataset.wait) io.observe(c); });
+  }
+
+  /* Clarity: switch between cognitive function and fatigue */
+  var segCog = document.getElementById('seg-cog'), segFat = document.getElementById('seg-fat');
+  var vizC = document.getElementById('clarity-viz');
+  function pick(which) {
+    var cog = which === 'cog';
+    segCog.setAttribute('aria-pressed', cog ? 'true' : 'false');
+    segFat.setAttribute('aria-pressed', cog ? 'false' : 'true');
+    document.getElementById('chart-cog').hidden = !cog;
+    document.getElementById('chart-fat').hidden = cog;
+    document.getElementById('pills-cog').hidden = !cog;
+    document.getElementById('pills-fat').hidden = cog;
+    document.getElementById('clarity-note').textContent = cog ? 'Cognitive function · primary · higher = better' : 'Fatigue · lower = better';
+    var box = document.getElementById(cog ? 'chart-cog' : 'chart-fat');
+    charts[box.dataset.chart](box);
+    if (!reduce) {
+      vizC.classList.add('pre'); vizC.classList.remove('in');
+      vizC.getBoundingClientRect();
+      requestAnimationFrame(function () { vizC.classList.remove('pre'); vizC.classList.add('in'); });
+    }
+  }
+  segCog.addEventListener('click', function () { pick('cog'); });
+  segFat.addEventListener('click', function () { pick('fat'); });
+
+  /* Depth: photos drift a little against the scroll; leaves keep drifting behind the chapters */
+  var photos = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
+  var evidence = document.getElementById('evidence'), afterSec = document.getElementById('after');
+  var cv = document.getElementById('ev-leaves'), g = cv.getContext('2d');
+  var DPR = Math.min(window.devicePixelRatio || 1, 2), W = 0, H = 0, leaves = [];
+  var sprites = window.bmMakeLeaf ? [['#9cc66f', '#e6f2c8'], ['#55953f', '#a8d673'], ['#2a6334', '#6dab4b'], ['#cfd9c2', '#f7f9f0']].map(function (c) { return window.bmMakeLeaf(c[0], c[1]); }) : [];
+  function sizeLeaves() {
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    leaves = [];
+    var n = Math.round(Math.min(46, Math.max(18, W * H / 32000)));
+    for (var i = 0; i < n; i++) { var z = Math.random(); leaves.push({ x: Math.random() * W, y: Math.random() * H, z: z, c: Math.floor(Math.random() * sprites.length), r: Math.random() * 6.28, tum: Math.random() * 6.28, vx: 3 + Math.random() * 6, vy: 4 + Math.random() * 8, len: 9 + z * 13 }); }
+  }
+  sizeLeaves();
+  window.addEventListener('resize', sizeLeaves);
+  var lastT = performance.now();
+  function tick(now) {
+    requestAnimationFrame(tick);
+    var vh = window.innerHeight;
+    var er = evidence.getBoundingClientRect(), ar = afterSec ? afterSec.getBoundingClientRect() : er;
+    var evIn = !(er.bottom < 0 || er.top > vh), afIn = !(ar.bottom < 0 || ar.top > vh);
+    if (!evIn && !afIn) { lastT = now; return; }
+    var dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
+    photos.forEach(function (img) {
+      var r = img.parentNode.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;
+      var off = ((r.top + r.height / 2) - vh / 2) / vh;
+      img.style.transform = 'translateY(' + (reduce ? 0 : (off * -26).toFixed(1)) + 'px) scale(1.1)';
+    });
+    if (!sprites.length || !evIn) return;
+    g.setTransform(DPR, 0, 0, DPR, 0, 0);
+    g.clearRect(0, 0, W, H);
+    var sy = window.scrollY;
+    for (var i = 0; i < leaves.length; i++) {
+      var l = leaves[i];
+      if (!reduce) { l.x += l.vx * dt * (0.4 + l.z); l.y += l.vy * dt * (0.4 + l.z); l.r += dt * 0.2; l.tum += dt * (0.5 + l.z); }
+      if (l.x > W + 30) l.x = -30; if (l.y > H + 30) l.y = -30;
+      var py = ((l.y - sy * 0.05 * l.z) % (H + 60) + H + 60) % (H + 60) - 30;
+      var k = l.len / 44, c = Math.cos(l.r) * k, s = Math.sin(l.r) * k, ty = 0.3 + 0.7 * Math.abs(Math.cos(l.tum));
+      g.globalAlpha = 0.1 + 0.28 * l.z;
+      g.setTransform(DPR * c, DPR * s, -DPR * s * ty, DPR * c * ty, DPR * l.x, DPR * py);
+      g.drawImage(sprites[l.c], -24, -12);
+    }
+    g.globalAlpha = 1;
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+<script>
+/* Inside the brain: the leaves act out four mechanisms, then settle into a nourished brain */
+(function () {
+  var sec = document.getElementById('inside'), sticky = document.getElementById('inside-sticky'), cv = document.getElementById('inside-canvas');
+  if (!sec || !cv || !window.bmMakeLeaf) return;
+  var g = cv.getContext('2d');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DPR = Math.min(window.devicePixelRatio || 1, 2), TAU = Math.PI * 2;
+  var sprites = [['#cfd9c2', '#f7f9f0'], ['#9cc66f', '#e6f2c8'], ['#55953f', '#a8d673'], ['#2a6334', '#6dab4b']].map(function (c) { return window.bmMakeLeaf(c[0], c[1]); });
+  var cl = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+  var sm = function (v) { v = cl(v); return v * v * (3 - 2 * v); };
+
+  function sample(w, h, paint) {
+    var c = document.createElement('canvas'); c.width = w; c.height = h;
+    var x2 = c.getContext('2d'); x2.fillStyle = '#fff'; paint(x2);
+    var d = x2.getImageData(0, 0, w, h).data, pts = [];
+    for (var y = 0; y < h; y++) for (var x = 0; x < w; x++) if (d[(y * w + x) * 4 + 3] > 128) pts.push(x, y);
+    return pts;
+  }
+  var brainD = document.getElementById('brain').getAttribute('d');
+  var brainPts = sample(620, 380, function (c) { c.translate(310, 190); c.scale(25, 25); c.translate(-393.3, -100.4); c.fill(new Path2D(brainD)); });
+
+  var enz = [[-110, 4], [0, -8], [110, 6]];
+  var rads = [[-240, -150], [-100, -205], [30, -165], [160, -215], [270, -140]];
+  var neighbour = [290, -200];
+  var branches = [
+    [[0, 34], [-18, -40], [-55, -110], [-85, -185]],
+    [[0, 34], [28, -46], [62, -110], [120, -160], [200, -190], [276, -198]],
+    [[-26, 60], [-105, 42], [-180, 12], [-265, -16]],
+    [[26, 70], [105, 92], [180, 74], [250, 34]],
+    [[0, 92], [-18, 170], [-58, 236]],
+    [[10, 92], [48, 168], [104, 226]],
+    [[-55, -110], [-125, -130], [-180, -176]],
+    [[62, -110], [44, -186], [52, -250]]
+  ];
+  branches.forEach(function (b) {
+    var len = 0, segs = [];
+    for (var i = 1; i < b.length; i++) { var l = Math.hypot(b[i][0] - b[i - 1][0], b[i][1] - b[i - 1][1]); segs.push(l); len += l; }
+    b.len = len; b.segs = segs;
+  });
+  function along(b, f) {
+    var dist = f * b.len;
+    for (var i = 0; i < b.segs.length; i++) {
+      if (dist <= b.segs[i] || i === b.segs.length - 1) {
+        var k = b.segs[i] ? Math.min(1, dist / b.segs[i]) : 0;
+        return [b[i][0] + (b[i + 1][0] - b[i][0]) * k, b[i][1] + (b[i + 1][1] - b[i][1]) * k];
+      }
+      dist -= b.segs[i];
+    }
+    return b[b.length - 1];
+  }
+
+  var L = [], N = 0, W = 0, H = 0, S = 1, narrow = false;
+  function build(n) {
+    L = [];
+    for (var i = 0; i < n; i++) {
+      var k = Math.floor(Math.random() * (brainPts.length / 2)) * 2;
+      L.push({
+        d: Math.random(), th: Math.random() * TAU, rr: Math.random(), u: Math.random(),
+        a: Math.random() * TAU, rad: 28 + Math.random() * 18,
+        sx: (Math.random() - 0.5) * 760, sy: (Math.random() - 0.5) * 560, z: Math.random(),
+        br: i % branches.length, bf: Math.random(),
+        bx: (brainPts[k] - 310) * 0.82, by: (brainPts[k + 1] - 190) * 0.82,
+        col: Math.floor(Math.random() * 4), rot: Math.random() * TAU,
+        spin: (Math.random() < 0.5 ? -1 : 1) * (0.3 + Math.random() * 0.7), tum: Math.random() * TAU, sz: 0.75 + Math.random() * 0.5
+      });
+    }
+  }
+  function resize() {
+    W = sticky.clientWidth; H = sticky.clientHeight;
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    narrow = W < 900;
+    S = narrow ? Math.min(W / 700, H / 1000) : Math.min(W / 1060, H / 760);
+    var want = narrow ? 650 : 1100;
+    if (want !== N) { N = want; build(N); }
+  }
+  resize();
+  var rsT = null;
+  window.addEventListener('resize', function () { clearTimeout(rsT); rsT = setTimeout(resize, 150); });
+
+  var label = document.getElementById('in-label'), big = document.getElementById('in-big'), small = document.getElementById('in-small');
+  var box = document.getElementById('in-text'), bar = document.getElementById('in-bar');
+  var caps = [
+    ['Neurotransmitter modulation', 'Acetylcholine boost', 'Bacosides inhibit acetylcholinesterase, keeping acetylcholine active for longer.*'],
+    ['Neurotransmitter modulation', 'Serotonin and GABA balance', 'Bacosides support the brain’s calming neurotransmitters.*'],
+    ['Neuroprotection & antioxidant defence', 'Free radical neutralisation', 'Bacosides neutralise free radicals and help prevent lipid peroxidation.*'],
+    ['Neuroprotection & antioxidant defence', 'Axon and dendrite repair', 'Preclinical studies suggest bacosides promote the growth of dendritic branches.*'],
+    ['The result', 'A nourished brain', 'Reaction time, memory, focus, attention and clarity.']
+  ];
+  var stage = 0, swapAt = -1;
+  function setStage(i) {
+    if (i !== stage) { stage = i; box.classList.add('swap'); swapAt = performance.now(); }
+    if (swapAt >= 0 && performance.now() - swapAt > 380) {
+      swapAt = -1; label.textContent = caps[stage][0]; big.textContent = caps[stage][1]; small.textContent = caps[stage][2]; box.classList.remove('swap');
+    }
+  }
+
+  var p = 0, pre = 0, t = 0, mx = 0, tmx = 0, hover = false, lastNow = 0;
+  sticky.addEventListener('pointermove', function (e) {
+    if (e.pointerType === 'touch' || reduce) return;
+    var r = sticky.getBoundingClientRect(); hover = true; tmx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+  });
+  sticky.addEventListener('pointerleave', function () { hover = false; });
+
+  function calm(x) { return Math.sin(x * 0.025) * 40; }
+  function jag(x) { return Math.sin(x * 0.11) * 26 + Math.sin(x * 0.37 + 1) * 16 + Math.sin(x * 0.9) * 6; }
+  function star(x, y, r) {
+    g.beginPath();
+    for (var k = 0; k < 16; k++) { var a = k / 16 * TAU, rr = k % 2 ? r * 0.45 : r; g.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); }
+    g.closePath();
+  }
+
+  function draw() {
+    var cxF = narrow ? 0.5 : 0.66, cyF = narrow ? 0.63 : 0.52;
+    var OX = W * cxF, OY = H * cyF;
+    var X = function (x, z) { return OX + (x + mx * (z || 0) * 40) * S; };
+    var Y = function (y) { return OY + y * S; };
+    var tm = reduce ? 0 : t;
+    g.setTransform(DPR, 0, 0, DPR, 0, 0);
+    g.globalAlpha = 1;
+    g.clearRect(0, 0, W, H);
+    var t1 = cl(p / 0.17), t2 = cl((p - 0.22) / 0.15), t3 = cl((p - 0.42) / 0.15), t4 = cl((p - 0.62) / 0.15), t5 = cl((p - 0.82) / 0.15);
+    function weight(k) {
+      var a = k === 0 ? 1 : sm((p - (0.2 * k - 0.03)) / 0.06);
+      var b = k === 4 ? 1 : 1 - sm((p - (0.2 * (k + 1) - 0.03)) / 0.06);
+      return a * b;
+    }
+    var w0 = weight(0), w1 = weight(1), w2 = weight(2), w3 = weight(3), w4 = weight(4);
+
+    /* scene 1: synapse, messengers and the enzyme that breaks them down */
+    if (w0 > 0.01) {
+      g.globalAlpha = w0;
+      var gr = g.createLinearGradient(0, Y(-240), 0, Y(-60));
+      gr.addColorStop(0, '#1a3d29'); gr.addColorStop(1, '#2e5e40');
+      g.fillStyle = gr; g.beginPath(); g.ellipse(X(0), Y(-150), 175 * S, 88 * S, 0, 0, TAU); g.fill();
+      var gr2 = g.createLinearGradient(0, Y(70), 0, Y(250));
+      gr2.addColorStop(0, '#2e5e40'); gr2.addColorStop(1, '#1a3d29');
+      g.fillStyle = gr2; g.beginPath(); g.ellipse(X(0), Y(162), 195 * S, 90 * S, 0, 0, TAU); g.fill();
+      g.strokeStyle = 'rgba(169,207,124,' + (0.15 + 0.5 * t1).toFixed(2) + ')'; g.lineWidth = 3 * S;
+      g.beginPath(); g.ellipse(X(0), Y(162), 195 * S, 90 * S, 0, Math.PI * 1.15, Math.PI * 1.85); g.stroke();
+      var slow = 1 - 0.6 * t1;
+      for (var m = 0; m < 26; m++) {
+        var ph = reduce ? (0.5 + (m % 5) * 0.08) : ((tm * 0.22 * slow + m * 0.137) % 1);
+        var ax = -140 + (m % 13) * 23 + Math.sin(m * 2.1) * 6, ay = -62 + ph * 134;
+        g.globalAlpha = w0 * (0.35 + 0.65 * t1) * Math.sin(ph * Math.PI);
+        g.fillStyle = '#e3f2d6'; g.beginPath(); g.arc(X(ax), Y(ay), 3.6 * S, 0, TAU); g.fill();
+      }
+      g.globalAlpha = w0 * (1 - 0.7 * t1);
+      g.strokeStyle = '#b97a52'; g.lineWidth = 3 * S; g.lineCap = 'round';
+      enz.forEach(function (e) {
+        g.beginPath(); g.moveTo(X(e[0] - 10), Y(e[1] - 9)); g.lineTo(X(e[0] + 4), Y(e[1])); g.lineTo(X(e[0] - 10), Y(e[1] + 9)); g.stroke();
+        g.beginPath(); g.arc(X(e[0] - 13), Y(e[1] - 10), 4 * S, 0, TAU); g.arc(X(e[0] - 13), Y(e[1] + 10), 4 * S, 0, TAU); g.stroke();
+      });
+    }
+    /* scene 2: a restless signal turned into a calm wave */
+    if (w1 > 0.01) {
+      var front = -300 + 600 * t2;
+      g.globalAlpha = w1; g.lineCap = 'round'; g.lineJoin = 'round';
+      g.strokeStyle = 'rgba(244,248,241,0.35)'; g.lineWidth = 2 * S; g.beginPath();
+      for (var x = front; x <= 300; x += 6) { if (x === front) g.moveTo(X(x), Y(jag(x))); else g.lineTo(X(x), Y(jag(x))); }
+      g.stroke();
+      g.strokeStyle = 'rgba(244,248,241,0.92)'; g.lineWidth = 3.4 * S; g.beginPath();
+      for (var x2 = -300; x2 <= front; x2 += 6) { if (x2 === -300) g.moveTo(X(x2), Y(calm(x2))); else g.lineTo(X(x2), Y(calm(x2))); }
+      g.stroke();
+    }
+    /* scene 3: free radicals caught before they reach the cell wall */
+    if (w2 > 0.01) {
+      g.globalAlpha = w2; g.lineCap = 'round';
+      [[170, 'rgba(147,174,157,0.6)'], [196, 'rgba(147,174,157,0.42)']].forEach(function (m) {
+        g.strokeStyle = m[1]; g.lineWidth = 12 * S; g.beginPath();
+        for (var x = -320; x <= 320; x += 8) { var yy = m[0] + Math.sin(x * 0.02 + tm * 0.5) * 7; if (x === -320) g.moveTo(X(x), Y(yy)); else g.lineTo(X(x), Y(yy)); }
+        g.stroke();
+      });
+      rads.forEach(function (r, k) {
+        var cap = cl((t3 - (k * 0.16 + 0.05)) / 0.12), fade = cl((t3 - (k * 0.16 + 0.05) - 0.1) / 0.15);
+        var ry = r[1] + t3 * 70;
+        g.globalAlpha = w2 * (1 - fade);
+        g.fillStyle = '#c55a43';
+        star(X(r[0]), Y(ry), (15 - 7 * cap) * S); g.fill();
+      });
+    }
+    /* scene 4: a neuron grows new branches and reaches a neighbour */
+    if (w3 > 0.01) {
+      g.globalAlpha = w3; g.lineCap = 'round'; g.lineJoin = 'round';
+      g.strokeStyle = 'rgba(200,226,192,0.6)'; g.lineWidth = 3.2 * S;
+      branches.forEach(function (b) {
+        var steps = 24; g.beginPath();
+        for (var s = 0; s <= steps; s++) { var pt = along(b, (s / steps) * t4); if (!s) g.moveTo(X(pt[0]), Y(pt[1])); else g.lineTo(X(pt[0]), Y(pt[1])); }
+        g.stroke();
+      });
+      g.fillStyle = '#7fa686'; g.beginPath(); g.arc(X(0), Y(62), 30 * S, 0, TAU); g.fill();
+      var link = cl((t4 - 0.85) / 0.15);
+      g.fillStyle = 'rgba(169,207,124,' + (0.15 + 0.75 * link).toFixed(2) + ')';
+      g.beginPath(); g.arc(X(neighbour[0]), Y(neighbour[1]), 18 * S, 0, TAU); g.fill();
+    }
+    /* scene 5: a soft halo behind the brain */
+    if (w4 > 0.01) {
+      var hg = g.createRadialGradient(X(0), Y(0), 10, X(0), Y(0), 330 * S);
+      hg.addColorStop(0, 'rgba(169,207,124,' + (0.16 * t5).toFixed(3) + ')'); hg.addColorStop(1, 'rgba(169,207,124,0)');
+      g.globalAlpha = w4; g.fillStyle = hg; g.fillRect(0, 0, W, H);
+    }
+
+    /* the leaves */
+    var SP = 0.7;
+    function stag(a, b, d) { var v = (p - a) / (b - a); v = cl(v * (1 + SP) - d * SP); return v * v * (3 - 2 * v); }
+    var frontX = -300 + 600 * t2;
+    var base = 1.6 * 3.4 * S;
+    for (var i = 0; i < L.length; i++) {
+      var q = L[i];
+      var drift = reduce ? 0 : 1;
+      /* scene targets */
+      var spin = t * 0.35 * drift;
+      var e = enz[i % 3];
+      var rx = e[0] + Math.cos(q.a + spin) * q.rad, ry = e[1] + Math.sin(q.a + spin) * q.rad * 0.8;
+      var gq = sm(t1 * 1.2 - q.d * 0.2);
+      var T0x = q.sx + (rx - q.sx) * gq, T0y = q.sy + (ry - q.sy) * gq;
+      var ux = -300 + q.u * 600, T1x, T1y;
+      if (ux < frontX) { T1x = ux; T1y = calm(ux) + (q.rr - 0.5) * 26; }
+      else { T1x = frontX + (q.rr - 0.5) * 80; T1y = (q.sy * 0.25) + Math.sin(t * 2 + i) * 6 * drift; }
+      var rk = i % 5, rd = rads[rk], capk = cl((t3 - (rk * 0.16 + 0.05)) / 0.12);
+      var rcx = rd[0] + Math.cos(q.a + spin * 1.5) * (q.rad * 0.9), rcy = rd[1] + t3 * 70 + Math.sin(q.a + spin * 1.5) * (q.rad * 0.9);
+      var wx = q.sx * 0.45, wy = 60 + q.sy * 0.12;
+      var T2x = wx + (rcx - wx) * sm(capk), T2y = wy + (rcy - wy) * sm(capk);
+      var bp = along(branches[q.br], q.bf * t4);
+      var T3x = bp[0] + (q.rr - 0.5) * 10, T3y = bp[1] + (q.u - 0.5) * 10;
+      var T4x = q.bx + Math.sin(t * 0.9 + i) * 0.8 * drift, T4y = q.by + Math.cos(t * 0.7 + i) * 0.8 * drift;
+      var Tx = [T0x, T1x, T2x, T3x, T4x], Ty = [T0y, T1y, T2y, T3y, T4y];
+      var x = Tx[0], y = Ty[0], travel = 0;
+      for (var k = 1; k < 5; k++) {
+        var ek = stag(0.2 * k - 0.07, 0.2 * k + 0.05, q.d);
+        if (ek <= 0) break;
+        var amp = Math.sin(Math.PI * ek) * 110 * (0.5 + 0.5 * q.rr), ang = q.th + ek * 1.4 * TAU;
+        x = x + (Tx[k] - x) * ek + Math.cos(ang) * amp;
+        y = y + (Ty[k] - y) * ek + Math.sin(ang) * amp * 0.5;
+        if (ek < 1) travel = 1;
+      }
+      if (pre < 1) { var fall = 1 - sm(pre * 1.3 - q.d * 0.3); y -= fall * 420; x += fall * q.sx * 0.3; }
+      var sx = X(x, q.z), sy = Y(y);
+      if (sy < -20 || sy > H + 20) continue;
+      var len = base * q.sz * (0.8 + q.z * 0.35);
+      var rot = q.rot + (travel ? p * 30 * q.spin : 0) + Math.sin(t * 0.8 + i) * 0.25 * drift;
+      var tum = q.tum + t * 0.6 * drift;
+      var kk = len / 44, c = Math.cos(rot) * kk, s = Math.sin(rot) * kk, ty = 0.3 + 0.7 * Math.abs(Math.cos(tum));
+      g.globalAlpha = 0.6 + 0.4 * q.z;
+      g.setTransform(DPR * c, DPR * s, -DPR * s * ty, DPR * c * ty, DPR * sx, DPR * sy);
+      g.drawImage(sprites[q.col], -24, -12);
+    }
+    g.setTransform(DPR, 0, 0, DPR, 0, 0);
+    g.globalAlpha = 1;
+  }
+
+  function frame(now) {
+    requestAnimationFrame(frame);
+    var r = sec.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > window.innerHeight) { lastNow = now; return; }
+    pre = cl(1 - r.top / window.innerHeight);
+    cv.style.setProperty('--fade', ((1 - pre) * 40).toFixed(1) + '%');
+    t += Math.min(0.05, Math.max(0, (now - (lastNow || now)) / 1000)); lastNow = now;
+    var total = sec.offsetHeight - sticky.clientHeight;
+    var pt = total > 0 ? cl(-r.top / total) : 0;
+    p += reduce ? (pt - p) : (pt - p) * 0.12;
+    if (Math.abs(pt - p) < 0.0005) p = pt;
+    if (!hover) tmx = reduce ? 0 : Math.sin(t * 0.25) * 0.3;
+    mx += (tmx - mx) * 0.05;
+    draw();
+    bar.style.transform = 'scaleY(' + p.toFixed(3) + ')';
+    setStage(p < 0.2 ? 0 : p < 0.4 ? 1 : p < 0.6 ? 2 : p < 0.8 ? 3 : 4);
+  }
+  requestAnimationFrame(frame);
+  window.bacomindInside = { jump: function (v) { p = v; } };
+})();
+
+/* The ring of leaves around the 8 */
+(function () {
+  var cv = document.getElementById('eight-leaves');
+  if (!cv || !window.bmMakeLeaf) return;
+  var g = cv.getContext('2d'), DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var sprites = [['#9cc66f', '#e6f2c8'], ['#55953f', '#a8d673'], ['#2a6334', '#6dab4b'], ['#cfd9c2', '#f7f9f0']].map(function (c) { return window.bmMakeLeaf(c[0], c[1]); });
+  var leaves = [];
+  for (var i = 0; i < 90; i++) leaves.push({ a: i / 90 * Math.PI * 2 + Math.random() * 0.05, r: 0.36 + Math.random() * 0.1, c: Math.floor(Math.random() * 4), rot: Math.random() * 6.28, s: 0.8 + Math.random() * 0.5 });
+  var W = 0, t = 0;
+  function size() { W = cv.clientWidth; cv.width = Math.round(W * DPR); cv.height = Math.round(W * DPR); }
+  size(); window.addEventListener('resize', size);
+  function frame() {
+    requestAnimationFrame(frame);
+    var r = cv.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > window.innerHeight || !W) return;
+    if (!reduce) t += 1 / 60;
+    g.setTransform(DPR, 0, 0, DPR, 0, 0); g.clearRect(0, 0, W, W);
+    for (var i = 0; i < leaves.length; i++) {
+      var l = leaves[i], a = l.a + t * 0.06;
+      var x = W / 2 + Math.cos(a) * l.r * W, y = W / 2 + Math.sin(a) * l.r * W;
+      var len = W * 0.07 * l.s, k = len / 44, rot = a + Math.PI / 2 + l.rot * 0.3 + Math.sin(t + i) * 0.15;
+      var c = Math.cos(rot) * k, s = Math.sin(rot) * k;
+      g.globalAlpha = 0.9;
+      g.setTransform(DPR * c, DPR * s, -DPR * s, DPR * c, DPR * x, DPR * y);
+      g.drawImage(sprites[l.c], -24, -12);
+    }
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* Reaction test */
+(function () {
+  var btn = document.getElementById('test-btn');
+  if (!btn) return;
+  var msEl = document.getElementById('test-ms'), hint = document.getElementById('test-hint');
+  var lastEl = document.getElementById('test-last'), bestEl = document.getElementById('test-best'), live = document.getElementById('test-live');
+  var state = 'idle', timer = null, t0 = 0, best = null;
+  try { var stored = parseInt(localStorage.getItem('bm-best') || '', 10); if (stored > 0) { best = stored; bestEl.textContent = best + ' ms'; } } catch (e) {}
+  function set(s, big, small, said) { state = s; btn.dataset.state = s; msEl.textContent = big; hint.textContent = small; live.textContent = said; }
+  function act() {
+    if (state === 'idle' || state === 'result' || state === 'early') {
+      set('wait', 'Wait…', 'Tap the moment it turns green', 'Wait for green');
+      clearTimeout(timer);
+      timer = setTimeout(function () { t0 = performance.now(); set('go', 'Tap!', 'Now', 'Green. Tap now'); }, 1400 + Math.random() * 2400);
+    } else if (state === 'wait') {
+      clearTimeout(timer);
+      set('early', 'Too soon', 'Tap to try again', 'Too soon. Try again');
+    } else if (state === 'go') {
+      var ms = Math.round(performance.now() - t0);
+      lastEl.textContent = ms + ' ms';
+      if (best === null || ms < best) { best = ms; bestEl.textContent = ms + ' ms'; try { localStorage.setItem('bm-best', String(ms)); } catch (e) {} }
+      set('result', ms + ' ms', 'Tap to go again', 'Your time: ' + ms + ' milliseconds');
+    }
+  }
+  /* pointerdown for speed; click covers keyboard and assistive technology, without double-firing */
+  var fromPointer = false;
+  btn.addEventListener('pointerdown', function (e) { if (e.button === 0 || e.pointerType !== 'mouse') { e.preventDefault(); fromPointer = true; act(); } });
+  btn.addEventListener('click', function () { if (fromPointer) { fromPointer = false; return; } act(); });
+  btn.addEventListener('keydown', function (e) { if (e.repeat && (e.key === 'Enter' || e.key === ' ')) e.preventDefault(); });
+  /* leaving the test mid-round resets it, so a late tap never records a huge time */
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (en) {
+      en.forEach(function (x) {
+        if (!x.isIntersecting && (state === 'wait' || state === 'go')) { clearTimeout(timer); set('idle', 'Start', 'Tap or press Enter, then wait for green', ''); }
+      });
+    }).observe(btn);
+  }
+
+  /* Closing line: Stay Clear turns from frosted to clear as you arrive */
+  var cc = document.querySelector('.close-clear');
+  if (cc && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (en) { en.forEach(function (x) { cc.classList.toggle('clear-on', x.isIntersecting); }); }, { threshold: 0.9 }).observe(cc);
+  }
+})();
+</script>
+
+</body>
+</html>
